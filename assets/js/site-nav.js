@@ -23,7 +23,7 @@
     </a>
     <div class="nav-links" id="navLinks">
       <div class="nav-dropdown">
-        <a href="${prefix}index.html" data-nav="home">Home</a>
+        <a href="${prefix}index.html" class="nav-trigger" data-nav="home" aria-expanded="false">Home</a>
         <div class="dropdown-menu">
           <a href="${prefix}index.html#about">About</a>
           <a href="${prefix}index.html#certificates">Certificates</a>
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="nav-dropdown">
-        <a href="${prefix}about.html" data-nav="coaching">Coaching</a>
+        <a href="${prefix}about.html" class="nav-trigger" data-nav="coaching" aria-expanded="false">Coaching</a>
         <div class="dropdown-menu">
           <a href="${prefix}about.html#process">Process</a>
           <a href="${prefix}about.html#method">Method</a>
@@ -40,7 +40,7 @@
       </div>
       <a href="${prefix}transformations.html" data-nav="transformations">Transformations</a>
       <div class="nav-dropdown">
-        <a href="#" data-nav="forms">Forms</a>
+        <button type="button" class="nav-trigger" data-nav="forms" aria-expanded="false">Forms</button>
         <div class="dropdown-menu">
           <a href="${prefix}nutrition-assessment-updated.html">Nutrition Assessment</a>
           <a href="${prefix}dietary-log.html">Dietary Log</a>
@@ -63,16 +63,39 @@
 
   const links = nav.querySelector('.nav-links');
   const menuButton = nav.querySelector('.hamburger');
+  const dropdowns = Array.from(nav.querySelectorAll('.nav-dropdown'));
+
+  function closeDropdowns(except) {
+    dropdowns.forEach((dropdown) => {
+      if (dropdown === except) return;
+      dropdown.classList.remove('open');
+      dropdown.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  dropdowns.forEach((dropdown) => {
+    const trigger = dropdown.querySelector('.nav-trigger');
+    trigger.addEventListener('click', (event) => {
+      if (window.matchMedia('(max-width: 760px)').matches && trigger.tagName === 'A') {
+        event.preventDefault();
+      }
+      const open = dropdown.classList.toggle('open');
+      closeDropdowns(open ? dropdown : null);
+      trigger.setAttribute('aria-expanded', String(open));
+    });
+  });
+
   menuButton.addEventListener('click', () => {
     const open = links.classList.toggle('open');
     menuButton.setAttribute('aria-expanded', String(open));
+    if (!open) closeDropdowns();
   });
 
-  links.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      if (link.getAttribute('href') === '#') event.preventDefault();
+  links.querySelectorAll('.dropdown-menu a').forEach((link) => {
+    link.addEventListener('click', () => {
       links.classList.remove('open');
       menuButton.setAttribute('aria-expanded', 'false');
+      closeDropdowns();
     });
   });
 })();
