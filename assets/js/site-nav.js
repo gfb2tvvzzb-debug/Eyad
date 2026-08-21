@@ -2,6 +2,13 @@
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
   const isTemplate = window.location.pathname.includes('/templates/');
   const prefix = isTemplate ? '../' : '';
+  if (!document.querySelector('link[data-site-nav-styles]')) {
+    const navStyles = document.createElement('link');
+    navStyles.rel = 'stylesheet';
+    navStyles.href = `${prefix}assets/css/site-nav.css`;
+    navStyles.dataset.siteNavStyles = 'true';
+    document.head.appendChild(navStyles);
+  }
   const activePage = currentPath === 'about.html'
     ? 'coaching'
     : currentPath === 'transformations.html'

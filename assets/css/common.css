@@ -45,7 +45,7 @@ body {
 #navbar.site-nav .dropdown-menu a::after { display: none; }
 #navbar.site-nav .nav-cta { padding: 12px 28px; border: 1px solid var(--cream-soft); color: var(--cream-soft); margin-left: 12px; }
 #navbar.site-nav .nav-cta:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-subtle); }
-#navbar.site-nav .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+#navbar.site-nav .hamburger { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 36px; height: 36px; padding: 0; border: 0; background: transparent; cursor: pointer; }
 #navbar.site-nav .hamburger span { width: 24px; height: 1.5px; background: var(--gold); }
 
 .page-nav { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-left: auto; margin-right: 28px; flex-wrap: wrap; }

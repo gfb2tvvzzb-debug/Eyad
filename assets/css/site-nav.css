@@ -1,0 +1,28 @@
+#navbar.site-nav .nav-cta {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 1px solid var(--cream-soft);
+  background: transparent;
+  color: var(--cream-soft) !important;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  line-height: normal;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
+  margin-left: 12px;
+}
+
+#navbar.site-nav .nav-cta:hover,
+#navbar.site-nav .nav-cta:focus-visible {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+  color: var(--gold) !important;
+}
+
+#navbar.site-nav .nav-cta.active {
+  border-color: var(--gold);
+  color: var(--gold) !important;
+}
