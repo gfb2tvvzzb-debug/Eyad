@@ -76,7 +76,7 @@
   dropdowns.forEach((dropdown) => {
     const trigger = dropdown.querySelector('.nav-trigger');
     trigger.addEventListener('click', (event) => {
-      if (window.matchMedia('(max-width: 760px)').matches && trigger.tagName === 'A') {
+      if (window.matchMedia('(max-width: 968px)').matches && trigger.tagName === 'A') {
         event.preventDefault();
       }
       const open = dropdown.classList.toggle('open');
