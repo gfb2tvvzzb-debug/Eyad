@@ -19,17 +19,29 @@ async function collectFiles(directory) {
   return files;
 }
 
-function copyTransformations() {
+function copyStaticAssets() {
   return {
-    name: 'copy-transformations',
+    name: 'copy-static-assets',
     async generateBundle() {
-      const sourceDir = resolve(rootDir, 'transformation');
-      const files = await collectFiles(sourceDir);
-      for (const file of files) {
+      for (const directory of ['transformation', 'certificates']) {
+        const files = await collectFiles(resolve(rootDir, directory));
+        for (const file of files) {
+          this.emitFile({
+            type: 'asset',
+            fileName: file.slice(rootDir.length).replace(/\\/g, '/').replace(/^\//, ''),
+            source: await readFile(file),
+          });
+        }
+      }
+      for (const file of [
+        'ISSA-Certified-Personal-Trainer-Certification.pdf',
+        'ISSA-Nutritionist-Certification.pdf',
+        'ISSA-Strength-and-Conditioning-Certification.pdf',
+      ]) {
         this.emitFile({
           type: 'asset',
-          fileName: file.slice(rootDir.length).replace(/\\/g, '/').replace(/^\//, ''),
-          source: await readFile(file),
+          fileName: file,
+          source: await readFile(resolve(rootDir, file)),
         });
       }
     },
@@ -37,7 +49,7 @@ function copyTransformations() {
 }
 
 export default defineConfig({
-  plugins: [copyTransformations()],
+  plugins: [copyStaticAssets()],
   server: {
     host: '0.0.0.0',
     port: 3000,
