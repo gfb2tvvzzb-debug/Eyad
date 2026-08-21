@@ -9,7 +9,7 @@
       : currentPath === 'auth-updated.html'
         ? 'start'
         : ['nutrition-assessment-updated.html', 'dietary-log.html', 'exercise-history.html', 'food-preferences.html', 'health-history.html'].includes(currentPath)
-          ? 'forms'
+          ? 'assignments'
         : currentPath === 'index.html' || currentPath === ''
           ? 'home'
           : '';
@@ -40,7 +40,7 @@
       </div>
       <a href="${prefix}transformations.html" data-nav="transformations">Transformations</a>
       <div class="nav-dropdown">
-        <button type="button" class="nav-trigger" data-nav="forms" aria-expanded="false">Forms</button>
+        <button type="button" class="nav-trigger" data-nav="assignments" aria-expanded="false">Assignments</button>
         <div class="dropdown-menu">
           <a href="${prefix}nutrition-assessment-updated.html">Nutrition Assessment</a>
           <a href="${prefix}dietary-log.html">Dietary Log</a>
