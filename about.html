@@ -618,7 +618,11 @@ footer {
   aspect-ratio: 1.414 / 1;
   overflow: hidden;
   background: #111;
-  padding: 18px;
+  padding: 0;
+  width: 100%;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
 }
 .certificate-art {
   width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -644,6 +648,14 @@ footer {
   filter: brightness(0.82);
   transition: transform 0.5s ease, filter 0.5s ease;
 }
+.credential-preview:hover img { transform: scale(1.03); filter: brightness(1); }
+.certificate-modal { display: none; position: fixed; inset: 0; z-index: 2000; align-items: center; justify-content: center; padding: 24px; }
+.certificate-modal.open { display: flex; }
+.certificate-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.88); backdrop-filter: blur(8px); }
+.certificate-modal-dialog { position: relative; z-index: 1; width: min(92vw, 940px); max-height: 92vh; padding: 12px; background: #111; border: 1px solid var(--border-light); box-shadow: 0 24px 80px rgba(0,0,0,.55); }
+.certificate-modal-image { display: block; width: 100%; max-height: calc(92vh - 24px); object-fit: contain; }
+.certificate-modal-close { position: absolute; top: -16px; right: -16px; width: 36px; height: 36px; border: 1px solid var(--cream-soft); border-radius: 50%; background: var(--bg); color: var(--cream-soft); font-size: 24px; font-weight: 300; line-height: 1; cursor: pointer; }
+.certificate-modal-close:hover { border-color: var(--gold); color: var(--gold); }
 .credential-info { padding: 28px 28px 30px; }
 .credential-kicker {
   font-family: 'Montserrat', sans-serif;
@@ -863,13 +875,9 @@ body.about-page #about, body.about-page #certificates { display: none; }
 
     <div class="credentials-grid stagger-children">
       <article class="credential-card">
-        <a class="credential-preview" href="ISSA-Certified-Personal-Trainer-Certification.pdf" target="_blank" rel="noopener">
-          <div class="certificate-art" role="img" aria-label="ISSA Certified Personal Trainer certificate">
-            <div class="certificate-mark">ISSA</div>
-            <div class="certificate-name">Certified Personal Trainer</div>
-            <div class="certificate-seal">01</div>
-          </div>
-        </a>
+        <button type="button" class="credential-preview" data-certificate-image="assets/images/certificates/personal-trainer.png" data-certificate-alt="ISSA Certified Personal Trainer certificate">
+          <img src="assets/images/certificates/personal-trainer.png" alt="ISSA Certified Personal Trainer certificate" loading="lazy">
+        </button>
         <div class="credential-info">
           <div class="credential-kicker">ISSA Certification</div>
           <h3 class="credential-title">Certified Personal Trainer</h3>
@@ -878,13 +886,9 @@ body.about-page #about, body.about-page #certificates { display: none; }
       </article>
 
       <article class="credential-card">
-        <a class="credential-preview" href="ISSA-Nutritionist-Certification.pdf" target="_blank" rel="noopener">
-          <div class="certificate-art" role="img" aria-label="ISSA Nutritionist certificate">
-            <div class="certificate-mark">ISSA</div>
-            <div class="certificate-name">Nutritionist</div>
-            <div class="certificate-seal">02</div>
-          </div>
-        </a>
+        <button type="button" class="credential-preview" data-certificate-image="assets/images/certificates/nutritionist.png" data-certificate-alt="ISSA Nutritionist certificate">
+          <img src="assets/images/certificates/nutritionist.png" alt="ISSA Nutritionist certificate" loading="lazy">
+        </button>
         <div class="credential-info">
           <div class="credential-kicker">ISSA Certification</div>
           <h3 class="credential-title">Nutritionist</h3>
@@ -893,13 +897,9 @@ body.about-page #about, body.about-page #certificates { display: none; }
       </article>
 
       <article class="credential-card">
-        <a class="credential-preview" href="ISSA-Strength-and-Conditioning-Certification.pdf" target="_blank" rel="noopener">
-          <div class="certificate-art" role="img" aria-label="ISSA Specialist in Strength and Conditioning certificate">
-            <div class="certificate-mark">ISSA</div>
-            <div class="certificate-name">Strength &amp; Conditioning</div>
-            <div class="certificate-seal">03</div>
-          </div>
-        </a>
+        <button type="button" class="credential-preview" data-certificate-image="assets/images/certificates/strength-conditioning.png" data-certificate-alt="ISSA Specialist in Strength and Conditioning certificate">
+          <img src="assets/images/certificates/strength-conditioning.png" alt="ISSA Specialist in Strength and Conditioning certificate" loading="lazy">
+        </button>
         <div class="credential-info">
           <div class="credential-kicker">ISSA Certification</div>
           <h3 class="credential-title">Specialist in Strength &amp; Conditioning</h3>
@@ -1153,6 +1153,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLight
   <span class="lightbox-close">&times;</span>
   <img id="lightboxImg" src="" alt="Program Preview">
 </div>
+<script type="module" src="./assets/js/certificate-viewer.js"></script>
 <script type="module" src="./assets/js/site-nav.js"></script>
 </body>
 </html>
