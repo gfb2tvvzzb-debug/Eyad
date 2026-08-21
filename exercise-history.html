@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exercise History — Evolved &amp; Balanced</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/common.css">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -127,18 +128,7 @@ footer .brand { color: var(--gold); }
 </head>
 <body>
 
-<div class="top-bar">
-  <a class="mark-logo" href="index.html"><img src="logo.png" alt="Evolved &amp; Balanced"></a>
-  <nav class="page-nav" aria-label="Client portal pages">
-    <a href="index.html">Home</a>
-    <a href="nutrition-assessment-updated.html">Assessment</a>
-    <a href="dietary-log.html">Dietary</a>
-    <a href="exercise-history.html" class="active">Exercise</a>
-    <a href="food-preferences.html">Preferences</a>
-    <a href="health-history.html">Health</a>
-  </nav>
-  <div class="doc-label">Exercise History</div>
-</div>
+<nav id="navbar" class="site-nav"><a href="index.html" class="nav-logo" aria-label="Evolved and Balanced home"><img class="nav-logo-img" src="logo.png" alt=""></a><div class="nav-links" id="navLinks"><div class="nav-dropdown"><a href="index.html">Home</a><div class="dropdown-menu"><a href="index.html#hero">Hero</a><a href="index.html#about">About</a><a href="index.html#certificates">Certificates</a><a href="index.html#faq">FAQ</a><a href="index.html#cta">CTA</a></div></div><div class="nav-dropdown"><a href="about.html">Coaching</a><div class="dropdown-menu"><a href="about.html#process">Process</a><a href="about.html#method">Method</a><a href="about.html#calculator">Calculator</a></div></div><a href="transformations.html">Transformations</a></div><a href="auth-updated.html" class="nav-cta">Start Now</a><div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></div></nav>
 
 <section class="hero">
   <div class="hero-eyebrow">The</div>
@@ -367,5 +357,6 @@ document.getElementById('exerciseForm').addEventListener('submit', function(e) {
 document.getElementById('thanksClose').addEventListener('click', () => document.getElementById('thanksOverlay').classList.remove('active'));
 </script>
 
+<script type="module" src="./assets/js/site-nav.js"></script>
 </body>
 </html>

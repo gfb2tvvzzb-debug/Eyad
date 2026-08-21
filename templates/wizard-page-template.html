@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wizard Page Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/common.css" />
+</head>
+<body>
+  <nav id="navbar" class="site-nav"><a href="../index.html" class="nav-logo" aria-label="Evolved and Balanced home"><img class="nav-logo-img" src="../logo.png" alt=""></a><div class="nav-links" id="navLinks"><div class="nav-dropdown"><a href="../index.html">Home</a><div class="dropdown-menu"><a href="../index.html#hero">Hero</a><a href="../index.html#about">About</a><a href="../index.html#certificates">Certificates</a><a href="../index.html#faq">FAQ</a><a href="../index.html#cta">CTA</a></div></div><div class="nav-dropdown"><a href="../about.html">Coaching</a><div class="dropdown-menu"><a href="../about.html#process">Process</a><a href="../about.html#method">Method</a><a href="../about.html#calculator">Calculator</a></div></div><a href="../transformations.html">Transformations</a></div><a href="../auth-updated.html" class="nav-cta">Start Now</a><div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></div></nav>
+
+  <section class="hero">
+    <div class="hero-eyebrow">Your</div>
+    <h1>Wizard Page</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">This is the shared layout used by the multi-step coaching forms.</p>
+  </section>
+
+  <div class="form-shell">
+    <div class="progress-wrap">
+      <div class="step-dots" id="stepDots"></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text"><span id="stepLabel">Step 1</span><span class="pct" id="progressPct">0%</span></div>
+    </div>
+
+    <form id="wizardForm">
+      <div class="section active" data-step="1">
+        <div class="section-bar">
+          <div class="left"><span class="num">01</span><h2>First Step</h2></div>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label class="field-label">Choose one</label>
+            <div class="pill-group" data-group="choice">
+              <div class="pill" data-value="Yes">Yes</div>
+              <div class="pill" data-value="No">No</div>
+            </div>
+          </div>
+          <div class="step-nav">
+            <button type="button" class="wiz-btn next" data-next>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-step="2">
+        <div class="section-bar">
+          <div class="left"><span class="num">02</span><h2>Second Step</h2></div>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label class="field-label">Choose all that apply</label>
+            <div class="chip-grid" data-group="choices" data-items="Alpha|Beta|Gamma|Delta"></div>
+          </div>
+          <div class="step-nav">
+            <button type="button" class="wiz-btn back" data-back>Back</button>
+            <button type="submit" class="wiz-btn submit-final">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="thanks-overlay" id="thanksOverlay">
+    <div class="thanks-card">
+      <div class="glyph">&amp;</div>
+      <h3>Thank You</h3>
+      <p>Your submission was recorded.</p>
+      <button class="thanks-close" id="thanksClose">Close</button>
+    </div>
+  </div>
+
+  <footer>
+    For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp;
+    <a href="mailto:eyad.bassem98@hotmail.com">eyad.bassem98@hotmail.com</a> &nbsp;·&nbsp;
+    <span class="brand">@eyadbassem_</span>
+  </footer>
+
+  <script src="../assets/js/shared.js"></script>
+  <script>
+    document.getElementById('wizardForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('thanksOverlay').classList.add('active');
+    });
+    document.getElementById('thanksClose').addEventListener('click', function () {
+      document.getElementById('thanksOverlay').classList.remove('active');
+    });
+  </script>
+<script type="module" src="../assets/js/site-nav.js"></script>
+</body>
+</html>

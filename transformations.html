@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Transformations | Evolved &amp; Balanced</title>
+<link rel="stylesheet" href="./assets/css/common.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -21,7 +22,7 @@ html{scroll-behavior:smooth}body{background:var(--ink);color:var(--paper);font-f
 </style>
 </head>
 <body>
-<header class="topbar"><a class="logo" href="index.html" aria-label="Evolved and Balanced home"></a><nav class="nav"><a href="index.html">Home</a><a href="about.html#process">Coaching</a><a href="transformations.html" class="active">Transformations</a><a href="auth-updated.html" class="nav-cta">Start now</a></nav></header>
+<nav id="navbar" class="site-nav"><a href="index.html" class="nav-logo" aria-label="Evolved and Balanced home"><img class="nav-logo-img" src="logo.png" alt=""></a><div class="nav-links" id="navLinks"><div class="nav-dropdown"><a href="index.html">Home</a><div class="dropdown-menu"><a href="index.html#hero">Hero</a><a href="index.html#about">About</a><a href="index.html#certificates">Certificates</a><a href="index.html#faq">FAQ</a><a href="index.html#cta">CTA</a></div></div><div class="nav-dropdown"><a href="about.html">Coaching</a><div class="dropdown-menu"><a href="about.html#process">Process</a><a href="about.html#method">Method</a><a href="about.html#calculator">Calculator</a></div></div><a href="transformations.html" class="active">Transformations</a></div><a href="auth-updated.html" class="nav-cta">Start Now</a><div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></div></nav>
 <main>
 <section class="hero"><div class="hero-content"><div class="kicker">The proof is in the process.</div><h1>Real bodies.<br><em>Remarkable</em> change.</h1><p class="hero-copy">A look at the discipline, patience, and precision behind the Evolved &amp; Balanced method.</p><div class="hero-meta"><div><strong>07</strong>featured clients</div><div><strong>01:01</strong>average focus</div><div><strong>100%</strong>individualized</div></div></div></section>
 <section class="intro"><div><div class="section-label">Selected transformations</div><h2>Progress, <em>documented.</em></h2></div><p class="intro-note">Every result below is built around a different body, schedule, and starting point. The constant is the method.</p></section>
@@ -50,5 +51,6 @@ function bindGallery(){document.querySelectorAll('.thumb').forEach(thumb=>thumb.
 function openLightbox(src,caption){const box=document.getElementById('lightbox');box.querySelector('img').src=src;box.querySelector('img').alt=caption+' transformation photo';box.querySelector('.lightbox-caption').textContent=caption;box.classList.add('open');}
 document.querySelector('.close').addEventListener('click',()=>document.getElementById('lightbox').classList.remove('open'));document.getElementById('lightbox').addEventListener('click',event=>{if(event.target.id==='lightbox')event.currentTarget.classList.remove('open')});document.addEventListener('keydown',event=>{if(event.key==='Escape')document.getElementById('lightbox').classList.remove('open')});document.querySelectorAll('.filter').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(item=>item.classList.remove('active'));button.classList.add('active');render(button.dataset.filter)}));render();
 </script>
+<script type="module" src="./assets/js/site-nav.js"></script>
 </body>
 </html>

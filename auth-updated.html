@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign In — Evolved &amp; Balanced</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/common.css">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -93,11 +94,11 @@ body {
 .auth-shell {
   min-height: calc(100vh - 89px);
   display: flex; align-items: center; justify-content: center;
-  padding: 60px 24px;
+  padding: 148px 24px 72px;
 }
 
 .auth-card {
-  width: 100%; max-width: 440px; animation: fadeUp 0.7s ease-out both;
+  width: 100%; max-width: 480px; animation: fadeUp 0.7s ease-out both;
 }
 
 .auth-intro { text-align: center; margin-bottom: 40px; }
@@ -111,16 +112,17 @@ body {
 
 /* tab toggle */
 .tab-toggle {
-  display: flex; border: 1px solid var(--border-light); margin-bottom: 36px; position: relative;
+  display: flex; border: 1px solid var(--border-light); margin-bottom: 32px; position: relative;
+  padding: 4px; background: rgba(255,255,255,0.025);
 }
 .tab-toggle button {
-  flex: 1; padding: 15px 0; background: transparent; border: none; cursor: pointer;
+  flex: 1; padding: 14px 0; background: transparent; border: none; cursor: pointer;
   font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
   text-transform: uppercase; color: var(--gray); transition: color 0.35s; position: relative; z-index: 1;
 }
 .tab-toggle button.active { color: var(--bg); }
 .tab-slider {
-  position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: var(--cream);
+  position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--cream);
   transition: transform 0.4s cubic-bezier(.65,0,.35,1); z-index: 0;
 }
 .tab-toggle[data-active="signup"] .tab-slider { transform: translateX(100%); }
@@ -139,6 +141,7 @@ body {
   display: flex; align-items: center;
 }
 .input-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.12); }
+.input-wrap:has(input:invalid:not(:placeholder-shown)) { border-color: rgba(184,102,79,0.8); }
 .input-wrap input {
   width: 100%; padding: 15px 16px; background: transparent; border: none; outline: none;
   color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 19px;
@@ -180,6 +183,7 @@ body {
 }
 .pill:hover { border-color: var(--gold); color: var(--gold); }
 .pill.active { background: rgba(201,168,76,0.16); border-color: var(--gold); color: var(--gold-bright); }
+.pill:focus-visible, .tab-toggle button:focus-visible, .link-gold:focus-visible, .submit-btn:focus-visible, .pw-toggle:focus-visible, .checkbox-line:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 /* row helpers */
 .field-row { display: flex; align-items: center; justify-content: space-between; margin: -6px 0 24px; }
@@ -218,7 +222,7 @@ body {
 
 .err-msg {
   font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--danger);
-  margin-top: -14px; margin-bottom: 18px; display: none;
+  margin-top: -10px; margin-bottom: 18px; display: none; padding-left: 2px;
 }
 .err-msg.show { display: block; }
 
@@ -269,9 +273,10 @@ footer a { color: var(--gray); }
 footer .brand { color: var(--gold); }
 
 @media (max-width: 480px) {
-  .top-bar { padding: 4px 20px; }
-  .auth-shell { padding: 40px 16px; }
+  .auth-shell { padding: 116px 16px 48px; }
   .auth-title { font-size: 21px; letter-spacing: 2px; }
+  .auth-intro { margin-bottom: 28px; }
+  .tab-toggle { margin-bottom: 26px; }
   .cc-wrap { flex: 0 0 96px; }
   .row-2 { grid-template-columns: 1fr; gap: 0; }
 }
@@ -319,17 +324,7 @@ footer .brand { color: var(--gold); }
   </div>
 </div>
 
-<div class="top-bar">
-  <a class="mark-logo" href="index.html"><img src="logo.png" alt="Evolved &amp; Balanced"></a>
-  <nav class="page-nav" aria-label="Client portal pages">
-    <a href="index.html">Home</a>
-    <a href="nutrition-assessment-updated.html">Assessment</a>
-    <a href="dietary-log.html">Dietary</a>
-    <a href="exercise-history.html">Exercise</a>
-    <a href="food-preferences.html">Preferences</a>
-    <a href="health-history.html">Health</a>
-  </nav>
-</div>
+<nav id="navbar" class="site-nav"><a href="index.html" class="nav-logo" aria-label="Evolved and Balanced home"><img class="nav-logo-img" src="logo.png" alt=""></a><div class="nav-links" id="navLinks"><div class="nav-dropdown"><a href="index.html">Home</a><div class="dropdown-menu"><a href="index.html#hero">Hero</a><a href="index.html#about">About</a><a href="index.html#certificates">Certificates</a><a href="index.html#faq">FAQ</a><a href="index.html#cta">CTA</a></div></div><div class="nav-dropdown"><a href="about.html">Coaching</a><div class="dropdown-menu"><a href="about.html#process">Process</a><a href="about.html#method">Method</a><a href="about.html#calculator">Calculator</a></div></div><a href="transformations.html">Transformations</a></div><a href="auth-updated.html" class="nav-cta active">Start Now</a><div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></div></nav>
 
 <div class="auth-shell">
   <div class="auth-card">
@@ -379,11 +374,11 @@ footer .brand { color: var(--gold); }
       <form id="signupForm" novalidate>
         <div class="field">
           <label class="field-label">Full Name</label>
-          <div class="input-wrap"><input type="text" name="fullName" placeholder="Enter your full name" autocomplete="name"></div>
+          <div class="input-wrap"><input id="signupName" type="text" name="fullName" placeholder="Enter your full name" autocomplete="name"></div>
         </div>
         <div class="field">
           <label class="field-label">Email Address</label>
-          <div class="input-wrap"><input type="email" name="email" placeholder="you@email.com" autocomplete="email"></div>
+          <div class="input-wrap"><input id="signupEmail" type="email" name="email" placeholder="you@email.com" autocomplete="email"></div>
         </div>
         <div class="field">
           <label class="field-label">Phone Number</label>
@@ -401,13 +396,13 @@ footer .brand { color: var(--gold); }
                 <option value="+90">🇹🇷 +90</option>
               </select>
             </div>
-            <div class="input-wrap phone-wrap"><input type="tel" name="phone" placeholder="10 123 4567" inputmode="tel"></div>
+            <div class="input-wrap phone-wrap"><input id="signupPhone" type="tel" name="phone" placeholder="10 123 4567" inputmode="tel"></div>
           </div>
         </div>
         <div class="row-2">
           <div class="field">
             <label class="field-label">Date of Birth</label>
-            <div class="input-wrap"><input type="date" name="dob"></div>
+            <div class="input-wrap"><input id="signupDob" type="date" name="dob"></div>
           </div>
           <div class="field">
             <label class="field-label">Gender</label>
@@ -419,16 +414,16 @@ footer .brand { color: var(--gold); }
         </div>
         <div class="field">
           <label class="field-label">Address</label>
-          <div class="input-wrap"><input type="text" name="address" placeholder="Street, City" autocomplete="street-address"></div>
+          <div class="input-wrap"><input id="signupAddress" type="text" name="address" placeholder="Street, City" autocomplete="street-address"></div>
         </div>
         <div class="row-2">
           <div class="field">
             <label class="field-label">Height</label>
-            <div class="input-wrap"><input type="text" name="height" placeholder="e.g. 175 cm"></div>
+            <div class="input-wrap"><input id="signupHeight" type="text" name="height" placeholder="e.g. 175 cm"></div>
           </div>
           <div class="field">
             <label class="field-label">Weight</label>
-            <div class="input-wrap"><input type="text" name="weight" placeholder="e.g. 72 kg"></div>
+            <div class="input-wrap"><input id="signupWeight" type="text" name="weight" placeholder="e.g. 72 kg"></div>
           </div>
         </div>
         <div class="field">
@@ -492,6 +487,8 @@ function switchTo(tab) {
   document.getElementById('panel-signin').classList.toggle('active', tab === 'signin');
   document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
   authDesc.textContent = descText[tab];
+  const firstField = document.querySelector(`#panel-${tab} input:not([type="hidden"])`);
+  if (firstField) firstField.focus({ preventScroll: true });
 }
 tabToggle.querySelectorAll('button[data-tab]').forEach(btn => {
   btn.addEventListener('click', () => switchTo(btn.dataset.tab));
@@ -567,6 +564,7 @@ document.getElementById('signinForm').addEventListener('submit', (e) => {
   if (!emailOk || password.length < 1) {
     err.classList.add('show');
     btn.classList.add('shake');
+    document.getElementById(emailOk ? 'signinPw' : 'signinEmail').focus();
     setTimeout(() => btn.classList.remove('shake'), 400);
     return;
   }
@@ -607,6 +605,12 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
     err.textContent = message;
     err.classList.add('show');
     btn.classList.add('shake');
+    const firstInvalid = [
+      ['signupName', fullName], ['signupEmail', emailOk], ['signupPhone', phone],
+      ['signupDob', dob], ['signupAddress', address], ['signupHeight', height],
+      ['signupWeight', weight], ['signupPw', password.length >= 8], ['confirmPw', password === confirmPassword]
+    ].find(([, value]) => !value);
+    if (firstInvalid) document.getElementById(firstInvalid[0]).focus();
     setTimeout(() => btn.classList.remove('shake'), 400);
     return;
   }
@@ -647,5 +651,6 @@ document.getElementById('thanksOverlay').addEventListener('click', function(e) {
 })();
 </script>
 
+<script type="module" src="./assets/js/site-nav.js"></script>
 </body>
 </html>
