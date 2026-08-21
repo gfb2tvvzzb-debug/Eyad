@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Evolved &amp; Balanced</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-alt: #151515;
+  --bg-card: #141414;
+  --border: rgba(255,255,255,0.09);
+  --border-light: rgba(255,255,255,0.13);
+  --gold: #c9a84c;
+  --gold-bright: #d4b660;
+  --gold-glow: rgba(201, 168, 76, 0.3);
+  --gold-subtle: rgba(201, 168, 76, 0.07);
+  --cream: #e8e0d0;
+  --cream-soft: #d5cfc4;
+  --white: #f0ebe3;
+  --gray: #8a8a8a;
+  --gray-dim: #5a5a5a;
+  --danger: #b8664f;
+  --success: #7a9b7e;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.page-nav { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-left: auto; margin-right: 28px; flex-wrap: wrap; }
+.page-nav a { color: var(--gray); font-size: 10px; font-weight: 600; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; transition: color 0.25s; }
+.page-nav a:hover, .page-nav a.active { color: var(--gold); }
+.page-dropdown { position: relative; }
+.page-dropdown-menu { display: none; position: absolute; top: calc(100% + 16px); left: -14px; min-width: 140px; padding: 8px 0; background: var(--bg-alt); border: 1px solid var(--border-light); z-index: 20; }
+.page-dropdown:hover .page-dropdown-menu, .page-dropdown:focus-within .page-dropdown-menu { display: block; }
+.page-dropdown-menu a { display: block; padding: 9px 14px; white-space: nowrap; }
+.nav-cta { padding: 11px 22px; border: 1px solid var(--cream-soft); color: var(--cream-soft) !important; margin-left: 8px; }
+.nav-cta:hover { border-color: var(--gold); color: var(--gold) !important; background: var(--gold-subtle); }
+@media (max-width: 760px) { .top-bar { flex-wrap: wrap; gap: 14px; padding: 18px 24px; } .page-nav { order: 3; flex-basis: 100%; justify-content: flex-start; gap: 12px 16px; margin: 0; } }
+@keyframes shakeX { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+
+/* ===== BACKGROUND GYM ICONS ===== */
+.bg-decor { position: absolute; top: 0; left: 0; width: 100%; height: 0; overflow: visible; z-index: 0; pointer-events: none; }
+.bg-icon { position: absolute; color: var(--gold); opacity: 0.1; will-change: transform; }
+.bg-icon svg { display: block; filter: drop-shadow(0 0 18px rgba(201,168,76,0.05)); }
+.bg-icon .float { animation: iconFloat 10s ease-in-out infinite; }
+.bg-icon:nth-child(2) .float { animation-duration: 12s; animation-delay: -3s; }
+.bg-icon:nth-child(3) .float { animation-duration: 9s; animation-delay: -5s; }
+.bg-icon:nth-child(4) .float { animation-duration: 13s; animation-delay: -1s; }
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(-18px) rotate(calc(var(--rot, 0deg) + 4deg)); }
+}
+
+.top-bar, .auth-shell, footer { position: relative; z-index: 1; }
+
+/* ===== HEADER ===== */
+.top-bar {
+  padding: 4px 40px; display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+}
+.mark { display: flex; align-items: center; gap: 14px; min-width: 260px; }
+.mark-logo { display: flex; align-items: center; }
+.mark-logo img { display: block; width: 90px; height: 90px; object-fit: contain; }
+.mark-glyph {
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px;
+  color: var(--gold); border: 1px solid var(--border-light); border-radius: 50%;
+  width: 54px; height: 54px; display: flex; align-items: center; justify-content: center;
+}
+.mark-text { line-height: 1.2; }
+.mark-text .name { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2.5px; color: var(--white); }
+.mark-text .sub { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 3px; color: var(--gray); }
+.top-bar .doc-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--cream-soft); text-align: right; }
+
+/* ===== AUTH SHELL ===== */
+.auth-shell {
+  min-height: calc(100vh - 89px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 24px;
+}
+
+.auth-card {
+  width: 100%; max-width: 440px; animation: fadeUp 0.7s ease-out both;
+}
+
+.auth-intro { text-align: center; margin-bottom: 40px; }
+.auth-eyebrow { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: var(--gold); margin-bottom: 4px; }
+.auth-title {
+  font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 3px;
+  color: var(--white); text-transform: uppercase;
+}
+.auth-rule { width: 56px; height: 1px; background: var(--gold); margin: 20px auto; }
+.auth-desc { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--cream-soft); }
+
+/* tab toggle */
+.tab-toggle {
+  display: flex; border: 1px solid var(--border-light); margin-bottom: 36px; position: relative;
+}
+.tab-toggle button {
+  flex: 1; padding: 15px 0; background: transparent; border: none; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--gray); transition: color 0.35s; position: relative; z-index: 1;
+}
+.tab-toggle button.active { color: var(--bg); }
+.tab-slider {
+  position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: var(--cream);
+  transition: transform 0.4s cubic-bezier(.65,0,.35,1); z-index: 0;
+}
+.tab-toggle[data-active="signup"] .tab-slider { transform: translateX(100%); }
+
+/* panels */
+.panel { display: none; }
+.panel.active { display: block; animation: fadeUp 0.5s ease-out both; }
+
+.field { margin-bottom: 22px; }
+.field-label {
+  font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px;
+  color: var(--cream-soft); margin-bottom: 10px; display: block;
+}
+.input-wrap {
+  border: 1px solid var(--border-light); transition: border-color 0.3s, box-shadow 0.3s; background: rgba(255,255,255,0.02);
+  display: flex; align-items: center;
+}
+.input-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.12); }
+.input-wrap input {
+  width: 100%; padding: 15px 16px; background: transparent; border: none; outline: none;
+  color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 19px;
+}
+.input-wrap input::placeholder { color: var(--gray-dim); }
+
+.pw-toggle {
+  background: none; border: none; cursor: pointer; padding: 0 16px; color: var(--gray);
+  display: flex; align-items: center; transition: color 0.25s; flex-shrink: 0;
+}
+.pw-toggle:hover { color: var(--gold); }
+.pw-toggle svg { width: 18px; height: 18px; }
+
+/* phone row */
+.phone-field { display: flex; gap: 10px; }
+.cc-wrap { flex: 0 0 110px; position: relative; }
+.cc-wrap::after {
+  content: ''; position: absolute; right: 14px; top: 50%; width: 7px; height: 7px;
+  border-right: 1px solid var(--gray); border-bottom: 1px solid var(--gray);
+  transform: translateY(-65%) rotate(45deg); pointer-events: none;
+}
+.cc-wrap select {
+  width: 100%; padding: 15px 28px 15px 14px; background: transparent; border: none; outline: none;
+  color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 17px; appearance: none;
+  -webkit-appearance: none; cursor: pointer;
+}
+.cc-wrap select option { background: var(--bg-alt); color: var(--white); }
+.phone-wrap { flex: 1; }
+
+/* two-up row layout */
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* single-select pill (gender) */
+.pill-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill {
+  padding: 12px 24px; border: 1px solid var(--border-light); cursor: pointer; user-select: none;
+  font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--cream-soft); transition: all 0.25s; background: transparent;
+}
+.pill:hover { border-color: var(--gold); color: var(--gold); }
+.pill.active { background: rgba(201,168,76,0.16); border-color: var(--gold); color: var(--gold-bright); }
+
+/* row helpers */
+.field-row { display: flex; align-items: center; justify-content: space-between; margin: -6px 0 24px; }
+.checkbox-line { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+.checkbox-line .box {
+  width: 16px; height: 16px; border: 1px solid var(--gray); flex-shrink: 0; position: relative; transition: all 0.25s;
+}
+.checkbox-line.checked .box { border-color: var(--gold); background: var(--gold); }
+.checkbox-line.checked .box::after {
+  content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
+  border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.checkbox-line span { font-family: 'Cormorant Garamond', serif; font-size: 15.5px; color: var(--cream-soft); }
+.checkbox-line span a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-glow); }
+.link-gold {
+  font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--gold); text-decoration: none; background: none; border: none; cursor: pointer;
+}
+.link-gold:hover { color: var(--gold-bright); }
+
+/* strength meter */
+.pw-strength { display: flex; gap: 5px; margin-top: 10px; height: 3px; }
+.pw-strength i { flex: 1; background: var(--border-light); transition: background 0.3s; }
+.pw-strength-label {
+  font-family: 'Montserrat', sans-serif; font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray); margin-top: 8px; display: block;
+}
+
+.submit-btn {
+  width: 100%; padding: 17px; background: var(--cream); color: var(--bg); border: none; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; transition: all 0.4s; margin-top: 6px;
+}
+.submit-btn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 10px 28px var(--gold-glow); }
+.submit-btn.shake { animation: shakeX 0.4s ease; }
+
+.err-msg {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--danger);
+  margin-top: -14px; margin-bottom: 18px; display: none;
+}
+.err-msg.show { display: block; }
+
+.divider-or {
+  display: flex; align-items: center; gap: 14px; margin: 30px 0;
+  font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase;
+}
+.divider-or::before, .divider-or::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.switch-line {
+  text-align: center; margin-top: 26px; font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gray);
+}
+.switch-line button {
+  background: none; border: none; color: var(--gold); font-family: inherit; font-style: italic;
+  font-size: 16px; cursor: pointer; border-bottom: 1px solid var(--gold-glow);
+}
+.switch-line button:hover { color: var(--gold-bright); }
+
+/* ===== SUCCESS OVERLAY ===== */
+.thanks-overlay {
+  display: none; position: fixed; inset: 0; z-index: 999; background: rgba(6,6,6,0.94);
+  align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(6px);
+}
+.thanks-overlay.active { display: flex; animation: fadeIn 0.4s ease; }
+.thanks-card {
+  max-width: 440px; text-align: center; border: 1px solid var(--border-light); background: var(--bg);
+  padding: 56px 44px;
+}
+.thanks-card .glyph { font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px; color: var(--gold); margin-bottom: 18px; }
+.thanks-card h3 {
+  font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 2px;
+  color: var(--white); text-transform: uppercase; margin-bottom: 18px;
+}
+.thanks-card p { font-family: 'Cormorant Garamond', serif; font-size: 17px; line-height: 1.7; color: var(--cream-soft); margin-bottom: 28px; }
+.thanks-close {
+  padding: 13px 36px; background: transparent; border: 1px solid var(--cream-soft); color: var(--cream-soft);
+  font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+}
+.thanks-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 30px 40px; text-align: center; border-top: 1px solid var(--border);
+  font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gray);
+}
+footer a { color: var(--gray); }
+footer .brand { color: var(--gold); }
+
+@media (max-width: 480px) {
+  .top-bar { padding: 4px 20px; }
+  .auth-shell { padding: 40px 16px; }
+  .auth-title { font-size: 21px; letter-spacing: 2px; }
+  .cc-wrap { flex: 0 0 96px; }
+  .row-2 { grid-template-columns: 1fr; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true">
+  <div class="bg-icon" style="top:6vh; left:8%; --rot:-12deg;">
+    <div class="float">
+      <svg width="100" height="100" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="50" width="14" height="20" rx="3" stroke="currentColor" stroke-width="2"/>
+        <rect x="96" y="50" width="14" height="20" rx="3" stroke="currentColor" stroke-width="2"/>
+        <rect x="24" y="55" width="8" height="10" fill="currentColor"/>
+        <rect x="88" y="55" width="8" height="10" fill="currentColor"/>
+        <rect x="32" y="58" width="56" height="4" rx="2" fill="currentColor"/>
+      </svg>
+    </div>
+  </div>
+  <div class="bg-icon" style="top:65vh; right:8%; --rot:10deg;">
+    <div class="float">
+      <svg width="80" height="100" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M45 20c-9 0-16 7-16 16 0 6 3 11 8 14-14 5-24 18-24 34 0 20 14 30 32 30s32-10 32-30c0-16-10-29-24-34 5-3 8-8 8-14 0-9-7-16-16-16z" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+  <div class="bg-icon" style="top:120vh; left:10%; --rot:8deg;">
+    <div class="float">
+      <svg width="110" height="70" viewBox="0 0 130 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="28" width="10" height="24" rx="2" fill="currentColor"/>
+        <rect x="14" y="20" width="8" height="40" rx="2" stroke="currentColor" stroke-width="2"/>
+        <rect x="24" y="34" width="82" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+        <rect x="108" y="20" width="8" height="40" rx="2" stroke="currentColor" stroke-width="2"/>
+        <rect x="118" y="28" width="10" height="24" rx="2" fill="currentColor"/>
+      </svg>
+    </div>
+  </div>
+  <div class="bg-icon" style="top:8vh; right:10%; --rot:14deg;">
+    <div class="float">
+      <svg width="76" height="76" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="45" cy="45" r="38" stroke="currentColor" stroke-width="2"/>
+        <circle cx="45" cy="45" r="12" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="top-bar">
+  <a class="mark-logo" href="index.html"><img src="logo.jpeg" alt="Evolved &amp; Balanced"></a>
+  <nav class="page-nav" aria-label="Client portal pages">
+    <a href="index.html">Home</a>
+    <a href="nutrition-assessment-updated.html">Assessment</a>
+    <a href="dietary-log.html">Dietary</a>
+    <a href="exercise-history.html">Exercise</a>
+    <a href="food-preferences.html">Preferences</a>
+    <a href="health-history.html">Health</a>
+  </nav>
+</div>
+
+<div class="auth-shell">
+  <div class="auth-card">
+
+    <div class="auth-intro">
+      <div class="auth-eyebrow">Welcome to</div>
+      <div class="auth-title">Evolved &amp; Balanced</div>
+      <div class="auth-rule"></div>
+      <p class="auth-desc" id="authDesc">Sign in to continue your program.</p>
+    </div>
+
+    <div class="tab-toggle" id="tabToggle" data-active="signin">
+      <div class="tab-slider"></div>
+      <button type="button" class="active" data-tab="signin">Sign In</button>
+      <button type="button" data-tab="signup">Sign Up</button>
+    </div>
+
+    <!-- SIGN IN -->
+    <div class="panel active" id="panel-signin">
+      <form id="signinForm" novalidate>
+        <div class="field">
+          <label class="field-label">Email Address</label>
+          <div class="input-wrap"><input type="email" name="email" placeholder="you@email.com" autocomplete="username"></div>
+        </div>
+        <div class="field">
+          <label class="field-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" name="password" placeholder="Enter your password" autocomplete="current-password" id="signinPw">
+            <button type="button" class="pw-toggle" data-toggle="signinPw" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="checkbox-line" id="rememberLine"><span class="box"></span><span>Remember me</span></label>
+          <button type="button" class="link-gold" id="forgotBtn">Forgot Password?</button>
+        </div>
+        <p class="err-msg" id="signinErr">Please enter a valid email and password.</p>
+        <button type="submit" class="submit-btn" id="signinSubmit">Sign In</button>
+      </form>
+      <div class="divider-or">or</div>
+      <p class="switch-line">New here? <button type="button" data-switch="signup">Create an account</button></p>
+    </div>
+
+    <!-- SIGN UP -->
+    <div class="panel" id="panel-signup">
+      <form id="signupForm" novalidate>
+        <div class="field">
+          <label class="field-label">Full Name</label>
+          <div class="input-wrap"><input type="text" name="fullName" placeholder="Enter your full name" autocomplete="name"></div>
+        </div>
+        <div class="field">
+          <label class="field-label">Email Address</label>
+          <div class="input-wrap"><input type="email" name="email" placeholder="you@email.com" autocomplete="email"></div>
+        </div>
+        <div class="field">
+          <label class="field-label">Phone Number</label>
+          <div class="phone-field">
+            <div class="input-wrap cc-wrap">
+              <select name="phoneCountry">
+                <option value="+20" selected>🇪🇬 +20</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+966">🇸🇦 +966</option>
+                <option value="+965">🇰🇼 +965</option>
+                <option value="+974">🇶🇦 +974</option>
+                <option value="+962">🇯🇴 +962</option>
+                <option value="+90">🇹🇷 +90</option>
+              </select>
+            </div>
+            <div class="input-wrap phone-wrap"><input type="tel" name="phone" placeholder="10 123 4567" inputmode="tel"></div>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label class="field-label">Date of Birth</label>
+            <div class="input-wrap"><input type="date" name="dob"></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Gender</label>
+            <div class="pill-group" data-group="gender" id="signupGender">
+              <div class="pill" data-value="Male">Male</div>
+              <div class="pill" data-value="Female">Female</div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Address</label>
+          <div class="input-wrap"><input type="text" name="address" placeholder="Street, City" autocomplete="street-address"></div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label class="field-label">Height</label>
+            <div class="input-wrap"><input type="text" name="height" placeholder="e.g. 175 cm"></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Weight</label>
+            <div class="input-wrap"><input type="text" name="weight" placeholder="e.g. 72 kg"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" name="password" placeholder="Create a password" autocomplete="new-password" id="signupPw">
+            <button type="button" class="pw-toggle" data-toggle="signupPw" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="pw-strength" id="pwStrength"><i></i><i></i><i></i><i></i></div>
+          <span class="pw-strength-label" id="pwStrengthLabel">Password strength</span>
+        </div>
+        <div class="field">
+          <label class="field-label">Confirm Password</label>
+          <div class="input-wrap">
+            <input type="password" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" id="confirmPw">
+            <button type="button" class="pw-toggle" data-toggle="confirmPw" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field-row" style="margin-top:4px;">
+          <label class="checkbox-line" id="termsLine"><span class="box"></span><span>I agree to the <a href="#" onclick="return false;">Terms</a> &amp; <a href="#" onclick="return false;">Privacy Policy</a></span></label>
+        </div>
+        <p class="err-msg" id="signupErr">Please complete all fields correctly.</p>
+        <button type="submit" class="submit-btn" id="signupSubmit">Create Account</button>
+      </form>
+      <div class="divider-or">or</div>
+      <p class="switch-line">Already have an account? <button type="button" data-switch="signin">Sign in</button></p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp;
+  <a href="mailto:eyad.bassem98@hotmail.com">eyad.bassem98@hotmail.com</a> &nbsp;·&nbsp;
+  <span class="brand">@eyadbassem_</span>
+  <div style="margin-top:8px;">© 2026 Dr. Eyad Bassem. All Rights Reserved.</div>
+</footer>
+
+<div class="thanks-overlay" id="thanksOverlay">
+  <div class="thanks-card">
+    <div class="glyph">&amp;</div>
+    <h3 id="thanksTitle">Welcome Back</h3>
+    <p id="thanksMsg">You've successfully signed in. Redirecting you to your program.</p>
+    <button class="thanks-close" onclick="document.getElementById('thanksOverlay').classList.remove('active')">Close</button>
+  </div>
+</div>
+
+<script>
+// ===== Tab switching =====
+const tabToggle = document.getElementById('tabToggle');
+const authDesc = document.getElementById('authDesc');
+const descText = { signin: 'Sign in to continue your program.', signup: 'Create an account to get started.' };
+
+function switchTo(tab) {
+  tabToggle.dataset.active = tab;
+  tabToggle.querySelectorAll('button[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('panel-signin').classList.toggle('active', tab === 'signin');
+  document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+  authDesc.textContent = descText[tab];
+}
+tabToggle.querySelectorAll('button[data-tab]').forEach(btn => {
+  btn.addEventListener('click', () => switchTo(btn.dataset.tab));
+});
+document.querySelectorAll('[data-switch]').forEach(btn => {
+  btn.addEventListener('click', () => switchTo(btn.dataset.switch));
+});
+
+// ===== Password visibility toggles =====
+document.querySelectorAll('.pw-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = document.getElementById(btn.dataset.toggle);
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+});
+
+// ===== Single-select pill group (gender) =====
+document.querySelectorAll('.pill-group').forEach(group => {
+  group.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      group.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+});
+function getPillValue(group) {
+  const active = group.querySelector('.pill.active');
+  return active ? active.dataset.value : '';
+}
+
+// ===== Checkbox lines (remember me / terms) =====
+document.querySelectorAll('.checkbox-line').forEach(line => {
+  line.addEventListener('click', () => line.classList.toggle('checked'));
+});
+
+// ===== Password strength meter =====
+const pwInput = document.getElementById('signupPw');
+const strengthBars = document.querySelectorAll('#pwStrength i');
+const strengthLabel = document.getElementById('pwStrengthLabel');
+const strengthColors = ['#b8664f', '#c98a4c', '#c9a84c', '#7a9b7e'];
+const strengthWords = ['Weak', 'Fair', 'Good', 'Strong'];
+
+pwInput.addEventListener('input', () => {
+  const val = pwInput.value;
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  strengthBars.forEach((bar, i) => {
+    bar.style.background = (val.length && i < Math.max(score, 1)) ? strengthColors[Math.max(score,1) - 1] : 'var(--border-light)';
+  });
+  strengthLabel.textContent = val.length ? strengthWords[Math.max(score, 1) - 1] : 'Password strength';
+});
+
+// ===== Forgot password =====
+document.getElementById('forgotBtn').addEventListener('click', () => {
+  document.getElementById('thanksTitle').textContent = 'Check Your Email';
+  document.getElementById('thanksMsg').textContent = "If an account exists for that email, we've sent a link to reset your password.";
+  document.getElementById('thanksOverlay').classList.add('active');
+});
+
+// ===== Sign In submit =====
+document.getElementById('signinForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const email = (fd.get('email') || '').trim();
+  const password = (fd.get('password') || '').trim();
+  const err = document.getElementById('signinErr');
+  const btn = document.getElementById('signinSubmit');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!emailOk || password.length < 1) {
+    err.classList.add('show');
+    btn.classList.add('shake');
+    setTimeout(() => btn.classList.remove('shake'), 400);
+    return;
+  }
+  err.classList.remove('show');
+  document.getElementById('thanksTitle').textContent = 'Welcome Back';
+  document.getElementById('thanksMsg').textContent = "You've successfully signed in. Redirecting you to your program.";
+  document.getElementById('thanksOverlay').classList.add('active');
+});
+
+// ===== Sign Up submit =====
+document.getElementById('signupForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const fullName = (fd.get('fullName') || '').trim();
+  const email = (fd.get('email') || '').trim();
+  const phoneCountry = (fd.get('phoneCountry') || '').trim();
+  const phone = (fd.get('phone') || '').trim();
+  const dob = (fd.get('dob') || '').trim();
+  const gender = getPillValue(document.getElementById('signupGender'));
+  const address = (fd.get('address') || '').trim();
+  const height = (fd.get('height') || '').trim();
+  const weight = (fd.get('weight') || '').trim();
+  const password = (fd.get('password') || '').trim();
+  const confirmPassword = (fd.get('confirmPassword') || '').trim();
+  const termsChecked = document.getElementById('termsLine').classList.contains('checked');
+  const err = document.getElementById('signupErr');
+  const btn = document.getElementById('signupSubmit');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  let message = 'Please complete all fields correctly.';
+  let valid = true;
+
+  if (!fullName || !emailOk || !phone || !dob || !gender || !address || !height || !weight || password.length < 8) valid = false;
+  if (password !== confirmPassword) { valid = false; message = 'Passwords do not match.'; }
+  if (!termsChecked) { valid = false; message = 'Please agree to the Terms & Privacy Policy.'; }
+
+  if (!valid) {
+    err.textContent = message;
+    err.classList.add('show');
+    btn.classList.add('shake');
+    setTimeout(() => btn.classList.remove('shake'), 400);
+    return;
+  }
+  err.classList.remove('show');
+
+  try {
+    localStorage.setItem('ebClientInfo', JSON.stringify({
+      fullName, email, phoneCountry, phone, dob, gender, address, height, weight
+    }));
+  } catch (e) { /* localStorage unavailable — assessment form will just ask again */ }
+
+  document.getElementById('thanksTitle').textContent = 'Account Created';
+  document.getElementById('thanksMsg').textContent = `Welcome, ${fullName.split(' ')[0]}. Taking you to your nutrition assessment now.`;
+  document.getElementById('thanksOverlay').classList.add('active');
+  setTimeout(() => { window.location.href = 'nutrition-assessment-updated.html'; }, 1800);
+});
+
+document.getElementById('thanksOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('active');
+});
+
+// ===== Background icon parallax =====
+(function() {
+  const icons = Array.from(document.querySelectorAll('.bg-icon'));
+  let ticking = false;
+  function update() {
+    const y = window.scrollY;
+    icons.forEach((icon, i) => {
+      const speed = 0.04 + (i % 3) * 0.03;
+      const dir = i % 2 === 0 ? 1 : -1;
+      icon.style.transform = `translateY(${dir * y * speed * 0.15}px)`;
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>

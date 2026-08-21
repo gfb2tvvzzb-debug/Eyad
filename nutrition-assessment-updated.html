@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition Assessment — Evolved &amp; Balanced</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-alt: #151515;
+  --bg-card: #141414;
+  --border: rgba(255,255,255,0.09);
+  --border-light: rgba(255,255,255,0.13);
+  --gold: #c9a84c;
+  --gold-bright: #d4b660;
+  --gold-glow: rgba(201, 168, 76, 0.3);
+  --gold-subtle: rgba(201, 168, 76, 0.07);
+  --cream: #e8e0d0;
+  --cream-soft: #d5cfc4;
+  --white: #f0ebe3;
+  --gray: #8a8a8a;
+  --gray-dim: #5a5a5a;
+  --danger: #b8664f;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.page-nav { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-left: auto; margin-right: 28px; flex-wrap: wrap; }
+.page-nav a { color: var(--gray); font-size: 10px; font-weight: 600; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; transition: color 0.25s; }
+.page-nav a:hover, .page-nav a.active { color: var(--gold); }
+@media (max-width: 760px) { .top-bar { flex-wrap: wrap; gap: 14px; padding: 18px 24px; } .page-nav { order: 3; flex-basis: 100%; justify-content: flex-start; gap: 12px 16px; margin: 0; } }
+
+/* ===== HEADER ===== */
+.top-bar {
+  padding: 4px 40px; display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+}
+.mark { display: flex; align-items: center; gap: 14px; min-width: 260px; }
+.mark-logo { display: flex; align-items: center; }
+.mark-logo img { display: block; width: 90px; height: 90px; object-fit: contain; }
+.mark-glyph {
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px;
+  color: var(--gold); border: 1px solid var(--border-light); border-radius: 50%;
+  width: 54px; height: 54px; display: flex; align-items: center; justify-content: center;
+}
+.mark-text { line-height: 1.2; }
+.mark-text .name { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2.5px; color: var(--white); }
+.mark-text .sub { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 3px; color: var(--gray); }
+.top-bar .doc-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--cream-soft); text-align: right; }
+.top-bar .doc-label span { display: block; font-size: 9px; color: var(--gray); letter-spacing: 1.5px; margin-top: 4px; font-weight: 400; text-transform: none; }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 100px 40px 70px; text-align: center; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: var(--gold);
+  margin-bottom: 6px; animation: fadeUp 0.9s ease-out both;
+}
+.hero h1 {
+  font-family: 'Montserrat', sans-serif; font-size: clamp(30px, 5vw, 46px); font-weight: 700;
+  letter-spacing: 5px; color: var(--white); text-transform: uppercase; line-height: 1.25;
+  animation: fadeUp 0.9s ease-out 0.1s both;
+}
+.hero-rule { width: 70px; height: 1px; background: var(--gold); margin: 26px auto; animation: fadeUp 0.9s ease-out 0.2s both; }
+.hero-desc {
+  font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.75; color: var(--cream-soft);
+  max-width: 560px; margin: 0 auto; font-style: italic; animation: fadeUp 0.9s ease-out 0.3s both;
+}
+.hero-meta {
+  margin-top: 34px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px;
+  color: var(--gray); text-transform: uppercase; animation: fadeUp 0.9s ease-out 0.4s both;
+}
+.hero-greeting {
+  margin-top: 18px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px;
+  color: var(--gold); animation: fadeUp 0.9s ease-out 0.5s both;
+}
+
+/* ===== FORM SHELL ===== */
+.form-shell { max-width: 760px; margin: 0 auto; padding: 60px 24px 100px; }
+
+.progress-wrap {
+  position: sticky; top: 89px; z-index: 90; background: var(--bg);
+  padding: 16px 0 22px; border-bottom: 1px solid var(--border);
+}
+.progress-track { height: 2px; background: var(--border); position: relative; }
+.progress-fill { height: 2px; background: var(--gold); width: 0%; transition: width 0.4s ease; }
+.progress-text {
+  margin-top: 10px; font-family: 'Montserrat', sans-serif; font-size: 10.5px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gray); display: flex; justify-content: space-between;
+}
+.progress-text .pct { color: var(--gold); }
+
+/* ===== SECTION (WIZARD) ===== */
+.section { display: none; margin-top: 0; }
+.section.active { display: block; animation: fadeUp 0.5s ease both; }
+.section-bar {
+  background: var(--bg); border: 1px solid var(--border-light); padding: 18px 26px;
+  display: flex; align-items: baseline; gap: 14px;
+}
+.section-bar .num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: var(--gold); }
+.section-bar h2 {
+  font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--white);
+}
+.section-body { border: 1px solid var(--border); border-top: none; padding: 40px 30px 34px; background: rgba(255,255,255,0.012); }
+
+/* ===== STEP DOTS ===== */
+.step-dots { display: flex; gap: 7px; margin-bottom: 14px; flex-wrap: wrap; }
+.step-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--border-light); cursor: pointer;
+  transition: all 0.3s;
+}
+.step-dot:hover { background: var(--gray); }
+.step-dot.done { background: var(--gold); opacity: 0.55; }
+.step-dot.current { background: var(--gold); opacity: 1; transform: scale(1.35); }
+
+/* ===== STEP NAV (Back / Next / Submit) ===== */
+.step-nav {
+  margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.wiz-btn {
+  padding: 16px 42px; font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.35s; border: none;
+}
+.wiz-btn.next, .wiz-btn.submit-final { background: var(--cream); color: var(--bg); margin-left: auto; }
+.wiz-btn.next:hover, .wiz-btn.submit-final:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-glow); }
+.wiz-btn.back { background: transparent; color: var(--cream-soft); border: 1px solid var(--border-light); }
+.wiz-btn.back:hover { border-color: var(--gold); color: var(--gold); }
+.wiz-btn.shake { animation: shakeX 0.4s ease; }
+@keyframes shakeX { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+
+/* ===== FIELDS ===== */
+.field { margin-bottom: 30px; }
+.field-label {
+  font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px;
+  color: var(--cream-soft); margin-bottom: 12px; display: block; line-height: 1.5;
+}
+.field-hint { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15.5px; color: var(--gray); margin-top: 6px; }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+.input-wrap {
+  border: 1px solid var(--border-light); transition: border-color 0.3s, box-shadow 0.3s; background: rgba(255,255,255,0.02);
+}
+.input-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.12); }
+.input-wrap input, .input-wrap textarea {
+  width: 100%; padding: 15px 16px; background: transparent; border: none; outline: none;
+  color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 19px;
+}
+.input-wrap textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
+.input-wrap input::placeholder, .input-wrap textarea::placeholder { color: var(--gray-dim); }
+
+/* phone number: country code + number */
+.phone-field { display: flex; gap: 10px; }
+.cc-wrap { flex: 0 0 118px; position: relative; }
+.cc-wrap::after {
+  content: ''; position: absolute; right: 14px; top: 50%; width: 7px; height: 7px;
+  border-right: 1px solid var(--gray); border-bottom: 1px solid var(--gray);
+  transform: translateY(-65%) rotate(45deg); pointer-events: none;
+}
+.cc-wrap select {
+  width: 100%; padding: 14px 30px 14px 14px; background: transparent; border: none; outline: none;
+  color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 18px; appearance: none;
+  -webkit-appearance: none; -moz-appearance: none; cursor: pointer;
+}
+.cc-wrap select option { background: var(--bg-alt); color: var(--white); font-family: 'Cormorant Garamond', serif; }
+.phone-wrap { flex: 1; }
+
+/* pill choice (single select, e.g. Yes/No, meals per day) */
+.pill-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill {
+  padding: 12px 24px; border: 1px solid var(--border-light); cursor: pointer; user-select: none;
+  font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--cream-soft); transition: all 0.25s; background: transparent;
+}
+.pill:hover { border-color: var(--gold); color: var(--gold); }
+.pill.active { background: rgba(201,168,76,0.16); border-color: var(--gold); color: var(--gold-bright); }
+
+/* multi-select checkbox chips */
+.chip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.chip-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.chip {
+  display: flex; align-items: center; gap: 12px; padding: 13px 16px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.25s; user-select: none;
+}
+.chip:hover { border-color: var(--border-light); background: rgba(255,255,255,0.02); }
+.chip.active { border-color: var(--gold); background: var(--gold-subtle); }
+.chip .box {
+  width: 16px; height: 16px; border: 1px solid var(--gray); flex-shrink: 0; position: relative; transition: all 0.25s;
+}
+.chip.active .box { border-color: var(--gold); background: var(--gold); }
+.chip.active .box::after {
+  content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
+  border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.chip span.label { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--cream-soft); }
+.chip.active span.label { color: var(--white); }
+
+.conditional {
+  max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+  opacity: 0; margin-top: 0;
+}
+.conditional.open { max-height: 260px; opacity: 1; margin-top: 16px; }
+
+.divider { height: 1px; background: var(--border); margin: 36px 0 0; }
+
+/* ===== SUBMIT ===== */
+.submit-block { margin-top: 60px; text-align: center; }
+.submit-btn {
+  padding: 18px 64px; background: var(--cream); color: var(--bg); border: none; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; transition: all 0.4s;
+}
+.submit-btn:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 10px 30px var(--gold-glow); }
+.submit-note {
+  margin-top: 28px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gray); text-align: center;
+}
+
+/* ===== THANK YOU OVERLAY ===== */
+.thanks-overlay {
+  display: none; position: fixed; inset: 0; z-index: 999; background: rgba(6,6,6,0.94);
+  align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(6px);
+}
+.thanks-overlay.active { display: flex; animation: fadeIn 0.4s ease; }
+.thanks-card {
+  max-width: 480px; text-align: center; border: 1px solid var(--border-light); background: var(--bg);
+  padding: 56px 44px;
+}
+.thanks-card .glyph { font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px; color: var(--gold); margin-bottom: 18px; }
+.thanks-card h3 {
+  font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 2px;
+  color: var(--white); text-transform: uppercase; margin-bottom: 18px;
+}
+.thanks-card p { font-family: 'Cormorant Garamond', serif; font-size: 17.5px; line-height: 1.7; color: var(--cream-soft); margin-bottom: 28px; }
+.thanks-card .sig { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 16px; margin-bottom: 28px; }
+.thanks-close {
+  padding: 13px 36px; background: transparent; border: 1px solid var(--cream-soft); color: var(--cream-soft);
+  font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+}
+.thanks-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 34px 40px; text-align: center; border-top: 1px solid var(--border);
+  font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gray);
+}
+footer a { color: var(--gray); }
+footer .brand { color: var(--gold); }
+
+@media (max-width: 640px) {
+  .top-bar { padding: 4px 20px; }
+  .mark-text .name { font-size: 10px; }
+  .hero { padding: 70px 20px 50px; }
+  .form-shell { padding: 40px 16px 70px; }
+  .row-2, .row-3, .chip-grid, .chip-grid-3 { grid-template-columns: 1fr; }
+  .section-body { padding: 30px 20px 6px; }
+  .progress-wrap { top: 73px; }
+  .cc-wrap { flex: 0 0 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="mark-logo" href="index.html"><img src="logo.jpeg" alt="Evolved &amp; Balanced"></a>
+  <nav class="page-nav" aria-label="Client portal pages">
+    <a href="index.html">Home</a>
+    <a href="nutrition-assessment-updated.html" class="active">Assessment</a>
+    <a href="dietary-log.html">Dietary</a>
+    <a href="exercise-history.html">Exercise</a>
+    <a href="food-preferences.html">Preferences</a>
+    <a href="health-history.html">Health</a>
+  </nav>
+  <div class="doc-label">Nutrition Assessment<span id="dateStamp"></span></div>
+</div>
+
+<section class="hero">
+  <div class="hero-eyebrow">The</div>
+  <h1>Nutrition Assessment</h1>
+  <div class="hero-rule"></div>
+  <p class="hero-desc">Where informed choices create lasting results. This assessment uncovers your habits, challenges, and goals with clarity and care — so your program can be built around your lifestyle, performance needs, and long‑term success.</p>
+  <div class="hero-meta">+2 01030590145 &nbsp;·&nbsp; eyad.bassem98@hotmail.com &nbsp;·&nbsp; @eyadbassem_</div>
+  <p class="hero-greeting" id="clientGreeting" style="display:none;"></p>
+</section>
+
+<div class="form-shell">
+
+  <div class="progress-wrap">
+    <div class="step-dots" id="stepDots"></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text"><span id="stepLabel">Step 1 of 9 · Goals</span><span class="pct" id="progressPct">11%</span></div>
+  </div>
+
+  <form id="assessmentForm">
+
+    <!-- Client info collected during registration — carried through, not re-asked here -->
+    <input type="hidden" name="fullName">
+    <input type="hidden" name="dob">
+    <input type="hidden" name="gender">
+    <input type="hidden" name="phoneCountry">
+    <input type="hidden" name="phone">
+    <input type="hidden" name="email">
+    <input type="hidden" name="address">
+    <input type="hidden" name="height">
+    <input type="hidden" name="weight">
+    <input type="hidden" name="assessmentDate">
+
+    <!-- GOALS -->
+    <div class="section active" data-step="1" id="step-1">
+      <div class="section-bar"><span class="num">01</span><h2>Goals</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">What are your nutrition goals? (select all that apply)</label>
+          <div class="chip-grid" data-group="goals">
+            <div class="chip" data-value="Create a healthy lifestyle"><div class="box"></div><span class="label">Create a healthy lifestyle</span></div>
+            <div class="chip" data-value="Digestive health"><div class="box"></div><span class="label">Digestive health</span></div>
+            <div class="chip" data-value="Disease prevention"><div class="box"></div><span class="label">Disease prevention</span></div>
+            <div class="chip" data-value="Energy improvement"><div class="box"></div><span class="label">Energy improvement</span></div>
+            <div class="chip" data-value="Fat loss"><div class="box"></div><span class="label">Fat loss</span></div>
+            <div class="chip" data-value="Hormonal balance"><div class="box"></div><span class="label">Hormonal balance</span></div>
+            <div class="chip" data-value="Improve overall health"><div class="box"></div><span class="label">Improve overall health</span></div>
+            <div class="chip" data-value="Improve body composition"><div class="box"></div><span class="label">Improve body composition</span></div>
+            <div class="chip" data-value="Maintain a healthy weight"><div class="box"></div><span class="label">Maintain a healthy weight</span></div>
+            <div class="chip" data-value="Muscle gain"><div class="box"></div><span class="label">Muscle gain</span></div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">Other</label>
+          <div class="input-wrap"><input type="text" name="goalsOther" placeholder="Anything else?"></div>
+        </div>
+        <div class="field"><label class="field-label">What do you think is a realistic weight for you?</label>
+          <div class="input-wrap" style="max-width:220px;"><input type="text" name="realisticWeight" placeholder="e.g. 68 kg"></div>
+        </div>
+        <div class="field"><label class="field-label">What motivates you to improve your nutritional habits?</label>
+          <div class="input-wrap"><textarea name="motivation" rows="2"></textarea></div>
+        </div>
+        <div class="field"><label class="field-label">What might make it difficult for you to maintain a healthier lifestyle?</label>
+          <div class="input-wrap"><textarea name="difficulty" rows="2"></textarea></div>
+        </div>
+        <div class="step-nav">
+          <span></span>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUTRITION BACKGROUND -->
+    <div class="section" data-step="2" id="step-2">
+      <div class="section-bar"><span class="num">02</span><h2>Nutrition Background</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">Have you seen a certified nutritionist within the last 12 months?</label>
+          <div class="pill-group yesno" data-group="seenNutritionist"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+        </div>
+        <div class="field"><label class="field-label">Do you have any food allergies/intolerances?</label>
+          <div class="pill-group yesno" data-group="allergies" data-reveal="allergiesDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="allergiesDetail"><label class="field-label">If yes, list the food:</label><div class="input-wrap"><input type="text" name="allergiesList"></div></div>
+        </div>
+        <div class="field"><label class="field-label">Do you experience regular bloating, indigestion, or discomfort after meals?</label>
+          <div class="pill-group yesno" data-group="digestive" data-reveal="digestiveDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="digestiveDetail"><label class="field-label">If yes, what foods may trigger it?</label><div class="input-wrap"><input type="text" name="digestiveTriggers"></div></div>
+        </div>
+        <div class="field"><label class="field-label">Are you pregnant, or currently planning to have a baby?</label>
+          <div class="pill-group yesno" data-group="pregnant"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+        </div>
+        <div class="field"><label class="field-label">Are you taking hormone replacement therapy?</label>
+          <div class="pill-group yesno" data-group="hrt"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CURRENT EATING PATTERN -->
+    <div class="section" data-step="3" id="step-3">
+      <div class="section-bar"><span class="num">03</span><h2>Current Eating Pattern</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">How many meals do you usually eat per day?</label>
+          <div class="pill-group" data-group="mealsPerDay">
+            <div class="pill" data-value="1-2 meals">1–2 meals</div>
+            <div class="pill" data-value="3 main meals">3 main meals</div>
+            <div class="pill" data-value="3 meals + snack">3 meals + snack</div>
+            <div class="pill" data-value="Grazing all day">Grazing all day</div>
+            <div class="pill" data-value="Irregular">Irregular</div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">How often do you eat breakfast during the week?</label>
+          <div class="pill-group" data-group="breakfastFreq">
+            <div class="pill" data-value="Every morning">Every morning</div>
+            <div class="pill" data-value="1-3 days">1–3 days</div>
+            <div class="pill" data-value="Rarely">Rarely</div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">How much water do you drink per day (on average)?</label>
+          <div class="pill-group" data-group="waterIntake">
+            <div class="pill" data-value="Less than 1L">Less than 1L</div>
+            <div class="pill" data-value="1-2L">1–2L</div>
+            <div class="pill" data-value="2-3L">2–3L</div>
+            <div class="pill" data-value="More than 3L">More than 3L</div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">Do you usually eat at consistent times each day?</label>
+          <div class="pill-group yesno" data-group="consistentTimes" data-reveal="mealPatternDetail" data-reveal-on="No"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="mealPatternDetail"><label class="field-label">If no, please explain your usual meal pattern:</label><div class="input-wrap"><input type="text" name="mealPattern"></div></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field" style="margin-top:32px;"><label class="field-label">Do you follow any specific dietary preference?</label>
+          <div class="chip-grid" data-group="dietaryPreference">
+            <div class="chip" data-value="Gluten-free"><div class="box"></div><span class="label">Gluten-free</span></div>
+            <div class="chip" data-value="Halal"><div class="box"></div><span class="label">Halal</span></div>
+            <div class="chip" data-value="Kosher"><div class="box"></div><span class="label">Kosher</span></div>
+            <div class="chip" data-value="Lactose-free"><div class="box"></div><span class="label">Lactose-free</span></div>
+            <div class="chip" data-value="Vegan"><div class="box"></div><span class="label">Vegan</span></div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">Other</label>
+          <div class="input-wrap"><input type="text" name="dietaryOther"></div>
+        </div>
+        <div class="field"><label class="field-label">Have you used any food tracking apps (e.g., MyFitnessPal)?</label>
+          <div class="pill-group yesno" data-group="trackingApps" data-reveal="trackingDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="trackingDetail"><label class="field-label">If yes, please tell:</label><div class="input-wrap"><input type="text" name="trackingDetail"></div></div>
+        </div>
+        <div class="field"><label class="field-label">Do you eat out regularly?</label>
+          <div class="pill-group yesno" data-group="eatOut" data-reveal="eatOutDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="eatOutDetail"><label class="field-label">If yes, how many times per week?</label><div class="input-wrap" style="max-width:160px;"><input type="number" min="0" name="eatOutFreq"></div></div>
+        </div>
+        <div class="field"><label class="field-label">Do you feel satisfied after your meals, or still hungry?</label>
+          <div class="pill-group" data-group="mealSatisfaction">
+            <div class="pill" data-value="Satisfied">Satisfied</div>
+            <div class="pill" data-value="Still hungry">Still hungry</div>
+            <div class="pill" data-value="Often overfull">Often overfull</div>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CURRENT LIVING PATTERN -->
+    <div class="section" data-step="4" id="step-4">
+      <div class="section-bar"><span class="num">04</span><h2>Current Living Pattern</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">Describe your work/home schedule (excessive travel, long hours, etc.)</label>
+          <div class="input-wrap"><textarea name="schedule" rows="2"></textarea></div>
+        </div>
+        <div class="field"><label class="field-label">How many hours per night do you usually sleep?</label>
+          <div class="input-wrap" style="max-width:160px;"><input type="text" name="sleepHours" placeholder="e.g. 7"></div>
+        </div>
+        <div class="field"><label class="field-label">Describe any emotional stressors or environmental issues that affect your eating.</label>
+          <div class="input-wrap"><textarea name="stressors" rows="2"></textarea></div>
+        </div>
+        <div class="field"><label class="field-label">Do you often eat on the go or rely on delivery/takeout?</label>
+          <div class="pill-group yesno" data-group="eatOnGo"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+        </div>
+        <div class="field"><label class="field-label">Do you eat in response to stress, boredom, or emotions?</label>
+          <div class="pill-group yesno" data-group="emotionalEating"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+        </div>
+        <div class="field"><label class="field-label">How do you cope with stress in your daily life?</label>
+          <div class="input-wrap"><input type="text" name="stressCoping"></div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBSTANCE USE -->
+    <div class="section" data-step="5" id="step-5">
+      <div class="section-bar"><span class="num">05</span><h2>Substance Use</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">Do you consume any of the following on a regular basis?</label>
+          <div class="chip-grid" data-group="substances">
+            <div class="chip" data-value="Alcohol"><div class="box"></div><span class="label">Alcohol</span></div>
+            <div class="chip" data-value="Coffee"><div class="box"></div><span class="label">Coffee</span></div>
+            <div class="chip" data-value="Energy drinks"><div class="box"></div><span class="label">Energy drinks</span></div>
+            <div class="chip" data-value="Soda"><div class="box"></div><span class="label">Soda</span></div>
+            <div class="chip" data-value="Tea"><div class="box"></div><span class="label">Tea</span></div>
+            <div class="chip" data-value="Tobacco"><div class="box"></div><span class="label">Tobacco</span></div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">How often, and how much (per day or week)?</label>
+          <div class="input-wrap"><input type="text" name="substanceFreq"></div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPLEMENTS -->
+    <div class="section" data-step="6" id="step-6">
+      <div class="section-bar"><span class="num">06</span><h2>Supplements</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">Do you take any supplements?</label>
+          <div class="chip-grid" data-group="supplements">
+            <div class="chip" data-value="Creatine"><div class="box"></div><span class="label">Creatine</span></div>
+            <div class="chip" data-value="Fat burners"><div class="box"></div><span class="label">Fat burners</span></div>
+            <div class="chip" data-value="Minerals"><div class="box"></div><span class="label">Minerals</span></div>
+            <div class="chip" data-value="Pre-workout"><div class="box"></div><span class="label">Pre-workout</span></div>
+            <div class="chip" data-value="Protein powders"><div class="box"></div><span class="label">Protein powders</span></div>
+            <div class="chip" data-value="Vitamins"><div class="box"></div><span class="label">Vitamins</span></div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">If selected, please specify brand or type</label>
+          <div class="input-wrap"><input type="text" name="supplementDetail"></div>
+        </div>
+        <div class="field"><label class="field-label">Do you use them regularly or only occasionally?</label>
+          <div class="pill-group" data-group="supplementUse"><div class="pill" data-value="Regularly">Regularly</div><div class="pill" data-value="Occasionally">Occasionally</div></div>
+        </div>
+        <div class="field"><label class="field-label">Are they self-prescribed or recommended by a professional?</label>
+          <div class="pill-group" data-group="supplementSource"><div class="pill" data-value="Self-prescribed">Self-prescribed</div><div class="pill" data-value="Professional">Professional</div></div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHYSICAL ACTIVITY -->
+    <div class="section" data-step="7" id="step-7">
+      <div class="section-bar"><span class="num">07</span><h2>Physical Activity</h2></div>
+      <div class="section-body">
+        <label class="field-label">What is your current training routine?</label>
+        <div class="row-3">
+          <div class="field"><div class="input-wrap"><input type="text" name="trainingType" placeholder="Type"></div></div>
+          <div class="field"><div class="input-wrap"><input type="text" name="trainingFrequency" placeholder="Frequency"></div></div>
+          <div class="field"><div class="input-wrap"><input type="text" name="trainingDuration" placeholder="Duration"></div></div>
+        </div>
+        <div class="field"><label class="field-label">Do you do any cardio? If so, how often?</label>
+          <div class="input-wrap"><input type="text" name="cardio"></div>
+        </div>
+        <div class="field"><label class="field-label">Do you use a fitness tracker or monitor your steps?</label>
+          <div class="pill-group yesno" data-group="fitnessTracker"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEIGHT HISTORY -->
+    <div class="section" data-step="8" id="step-8">
+      <div class="section-bar"><span class="num">08</span><h2>Weight History</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">Have you ever experienced dramatic weight changes (loss or gain)?</label>
+          <div class="pill-group yesno" data-group="weightChanges" data-reveal="weightChangesDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="weightChangesDetail"><label class="field-label">If yes, please describe:</label><div class="input-wrap"><textarea name="weightChangesDesc" rows="2"></textarea></div></div>
+        </div>
+        <div class="field"><label class="field-label">Overall, how satisfied are you with the physical appearance of your body?</label>
+          <div class="input-wrap"><input type="text" name="bodySatisfaction"></div>
+        </div>
+        <div class="field"><label class="field-label">How often do you weigh yourself?</label>
+          <div class="input-wrap"><input type="text" name="weighFrequency"></div>
+        </div>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="button" class="wiz-btn next" data-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DISORDERED EATING HISTORY -->
+    <div class="section" data-step="9" id="step-9">
+      <div class="section-bar"><span class="num">09</span><h2>Disordered Eating History</h2></div>
+      <div class="section-body">
+        <div class="field"><label class="field-label">Have you ever been diagnosed with or experienced an eating disorder?</label>
+          <div class="pill-group yesno" data-group="eatingDisorder" data-reveal="eatingDisorderDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="eatingDisorderDetail"><label class="field-label">If yes, please specify (optional):</label><div class="input-wrap"><input type="text" name="eatingDisorderDetail"></div></div>
+        </div>
+        <div class="field"><label class="field-label">Have you ever used any of the following as a method of weight control? (select all that apply)</label>
+          <div class="chip-grid" data-group="weightControlMethods">
+            <div class="chip" data-value="Binge eating episodes"><div class="box"></div><span class="label">Binge eating episodes</span></div>
+            <div class="chip" data-value="Diet pills"><div class="box"></div><span class="label">Diet pills</span></div>
+            <div class="chip" data-value="Excessive exercise or cardio"><div class="box"></div><span class="label">Excessive exercise or cardio</span></div>
+            <div class="chip" data-value="Fasting for long periods"><div class="box"></div><span class="label">Fasting for long periods</span></div>
+            <div class="chip" data-value="Laxatives or diuretics"><div class="box"></div><span class="label">Laxatives or diuretics</span></div>
+            <div class="chip" data-value="Skipping meals"><div class="box"></div><span class="label">Skipping meals</span></div>
+            <div class="chip" data-value="Vomiting after meals"><div class="box"></div><span class="label">Vomiting after meals</span></div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">Do you experience feelings of guilt or anxiety after eating?</label>
+          <div class="pill-group" data-group="guiltAnxiety">
+            <div class="pill" data-value="Often">Often</div>
+            <div class="pill" data-value="Sometimes">Sometimes</div>
+            <div class="pill" data-value="Rarely">Rarely</div>
+            <div class="pill" data-value="Never">Never</div>
+          </div>
+        </div>
+        <div class="field"><label class="field-label">Are there foods you avoid completely due to fear of weight gain?</label>
+          <div class="pill-group yesno" data-group="avoidFoods" data-reveal="avoidFoodsDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
+          <div class="conditional" id="avoidFoodsDetail"><label class="field-label">If yes, please list (optional):</label><div class="input-wrap"><input type="text" name="avoidFoodsList"></div></div>
+        </div>
+        <p class="submit-note">Submitting opens your email app with your answers ready to send to Dr. Eyad Bassem.</p>
+        <div class="step-nav">
+          <button type="button" class="wiz-btn back" data-back>Back</button>
+          <button type="submit" class="wiz-btn submit-final">Submit Assessment</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<footer>
+  For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp;
+  <a href="mailto:eyad.bassem98@hotmail.com">eyad.bassem98@hotmail.com</a> &nbsp;·&nbsp;
+  <span class="brand">@eyadbassem_</span>
+  <div style="margin-top:8px;">© 2026 Dr. Eyad Bassem. All Rights Reserved.</div>
+</footer>
+
+<div class="thanks-overlay" id="thanksOverlay">
+  <div class="thanks-card">
+    <div class="glyph">&amp;</div>
+    <h3>Thank You</h3>
+    <p>Thank you for taking the time to complete this assessment. Your answers will help design a nutrition program that truly fits your lifestyle and goals.</p>
+    <div class="sig">— Dr. Eyad Bassem</div>
+    <button class="thanks-close" onclick="document.getElementById('thanksOverlay').classList.remove('active')">Close</button>
+  </div>
+</div>
+
+<script>
+document.getElementById('dateStamp').textContent = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+// Load registration data into hidden fields so clients do not repeat it on this form.
+(function initializeAssessment() {
+  const form = document.getElementById('assessmentForm');
+  try {
+    const raw = localStorage.getItem('ebClientInfo');
+    if (raw) {
+      const info = JSON.parse(raw);
+      ['fullName', 'dob', 'gender', 'phoneCountry', 'phone', 'email', 'address', 'height', 'weight'].forEach(key => {
+        if (info[key] !== undefined && form.elements[key]) form.elements[key].value = info[key];
+      });
+    }
+  } catch (e) { /* localStorage unavailable */ }
+  if (form.elements['assessmentDate']) {
+    form.elements['assessmentDate'].value = new Date().toISOString().slice(0, 10);
+  }
+})();
+
+// Single-select pill groups
+document.querySelectorAll('.pill-group').forEach(group => {
+  group.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      group.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      updateProgress();
+      const revealId = group.dataset.reveal;
+      if (revealId) {
+        const revealOn = group.dataset.revealOn || 'Yes';
+        const target = document.getElementById(revealId);
+        target.classList.toggle('open', pill.dataset.value === revealOn);
+      }
+    });
+  });
+});
+
+// Multi-select chip groups
+document.querySelectorAll('.chip-grid').forEach(group => {
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+      updateProgress();
+    });
+  });
+});
+
+// Text inputs progress tracking
+document.querySelectorAll('.input-wrap input, .input-wrap textarea').forEach(el => {
+  el.addEventListener('input', updateProgress);
+});
+
+function getGroupValue(name) {
+  const group = document.querySelector(`.pill-group[data-group="${name}"]`);
+  if (!group) return '';
+  const active = group.querySelector('.pill.active');
+  return active ? active.dataset.value : '';
+}
+function getChipValues(name) {
+  const group = document.querySelector(`.chip-grid[data-group="${name}"]`);
+  if (!group) return [];
+  return Array.from(group.querySelectorAll('.chip.active')).map(c => c.dataset.value);
+}
+
+/* ===== WIZARD CONTROLLER ===== */
+const steps = Array.from(document.querySelectorAll('.section'));
+const totalSteps = steps.length;
+const stepTitles = steps.map(s => s.querySelector('.section-bar h2').textContent);
+let currentStep = 1;
+
+// Build step dots
+const dotsWrap = document.getElementById('stepDots');
+stepTitles.forEach((title, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'step-dot';
+  dot.title = title;
+  dot.addEventListener('click', () => {
+    if (i + 1 < currentStep) goToStep(i + 1); // freely revisit completed steps
+  });
+  dotsWrap.appendChild(dot);
+});
+
+function requiredOkForStep(stepEl) {
+  // Client contact info is now collected during registration, so every step here is optional-gated
+  return true;
+}
+
+function goToStep(n) {
+  n = Math.max(1, Math.min(totalSteps, n));
+  steps.forEach(s => s.classList.remove('active'));
+  const target = steps.find(s => s.dataset.step === String(n));
+  target.classList.add('active');
+  currentStep = n;
+  updateProgress();
+  document.querySelector('.progress-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelectorAll('[data-next]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const activeStep = steps.find(s => s.classList.contains('active'));
+    if (!requiredOkForStep(activeStep)) {
+      btn.classList.add('shake');
+      setTimeout(() => btn.classList.remove('shake'), 400);
+      return;
+    }
+    goToStep(currentStep + 1);
+  });
+});
+document.querySelectorAll('[data-back]').forEach(btn => {
+  btn.addEventListener('click', () => goToStep(currentStep - 1));
+});
+
+function updateProgress() {
+  const pct = Math.round((currentStep / totalSteps) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('stepLabel').textContent = `Step ${currentStep} of ${totalSteps} · ${stepTitles[currentStep - 1]}`;
+  document.querySelectorAll('.step-dot').forEach((dot, i) => {
+    dot.classList.toggle('current', i + 1 === currentStep);
+    dot.classList.toggle('done', i + 1 < currentStep);
+  });
+}
+
+document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const fd = new FormData(this);
+  const get = (n) => (fd.get(n) || '').toString().trim();
+
+  const lines = [];
+  lines.push('NUTRITION ASSESSMENT — ' + (get('fullName') || 'Unnamed Client'));
+  lines.push('');
+  lines.push('— CLIENT INFORMATION —');
+  lines.push('Full Name: ' + get('fullName'));
+  lines.push('Date of Birth: ' + get('dob'));
+  lines.push('Gender: ' + get('gender'));
+  lines.push('Phone: ' + get('phoneCountry') + ' ' + get('phone'));
+  lines.push('Email: ' + get('email'));
+  lines.push('Address: ' + get('address'));
+  lines.push('Height: ' + get('height'));
+  lines.push('Weight: ' + get('weight'));
+  lines.push('Assessment Date: ' + get('assessmentDate'));
+  lines.push('');
+  lines.push('— GOALS —');
+  lines.push('Goals: ' + getChipValues('goals').join(', '));
+  lines.push('Other: ' + get('goalsOther'));
+  lines.push('Realistic weight: ' + get('realisticWeight'));
+  lines.push('Motivation: ' + get('motivation'));
+  lines.push('Difficulty: ' + get('difficulty'));
+  lines.push('');
+  lines.push('— NUTRITION BACKGROUND —');
+  lines.push('Seen nutritionist (12mo): ' + getGroupValue('seenNutritionist'));
+  lines.push('Allergies/intolerances: ' + getGroupValue('allergies') + (get('allergiesList') ? ' — ' + get('allergiesList') : ''));
+  lines.push('Bloating/discomfort: ' + getGroupValue('digestive') + (get('digestiveTriggers') ? ' — ' + get('digestiveTriggers') : ''));
+  lines.push('Pregnant/planning: ' + getGroupValue('pregnant'));
+  lines.push('Hormone replacement therapy: ' + getGroupValue('hrt'));
+  lines.push('');
+  lines.push('— CURRENT EATING PATTERN —');
+  lines.push('Meals per day: ' + getGroupValue('mealsPerDay'));
+  lines.push('Breakfast frequency: ' + getGroupValue('breakfastFreq'));
+  lines.push('Water intake: ' + getGroupValue('waterIntake'));
+  lines.push('Consistent meal times: ' + getGroupValue('consistentTimes') + (get('mealPattern') ? ' — ' + get('mealPattern') : ''));
+  lines.push('Dietary preference: ' + getChipValues('dietaryPreference').join(', ') + (get('dietaryOther') ? ' / Other: ' + get('dietaryOther') : ''));
+  lines.push('Food tracking apps: ' + getGroupValue('trackingApps') + (get('trackingDetail') ? ' — ' + get('trackingDetail') : ''));
+  lines.push('Eats out regularly: ' + getGroupValue('eatOut') + (get('eatOutFreq') ? ' — ' + get('eatOutFreq') + 'x/week' : ''));
+  lines.push('Meal satisfaction: ' + getGroupValue('mealSatisfaction'));
+  lines.push('');
+  lines.push('— CURRENT LIVING PATTERN —');
+  lines.push('Schedule: ' + get('schedule'));
+  lines.push('Sleep hours: ' + get('sleepHours'));
+  lines.push('Stressors: ' + get('stressors'));
+  lines.push('Eats on the go/delivery: ' + getGroupValue('eatOnGo'));
+  lines.push('Emotional eating: ' + getGroupValue('emotionalEating'));
+  lines.push('Stress coping: ' + get('stressCoping'));
+  lines.push('');
+  lines.push('— SUBSTANCE USE —');
+  lines.push('Substances: ' + getChipValues('substances').join(', '));
+  lines.push('Frequency/amount: ' + get('substanceFreq'));
+  lines.push('');
+  lines.push('— SUPPLEMENTS —');
+  lines.push('Supplements: ' + getChipValues('supplements').join(', '));
+  lines.push('Brand/type: ' + get('supplementDetail'));
+  lines.push('Usage: ' + getGroupValue('supplementUse'));
+  lines.push('Source: ' + getGroupValue('supplementSource'));
+  lines.push('');
+  lines.push('— PHYSICAL ACTIVITY —');
+  lines.push('Training: ' + get('trainingType') + ' / ' + get('trainingFrequency') + ' / ' + get('trainingDuration'));
+  lines.push('Cardio: ' + get('cardio'));
+  lines.push('Fitness tracker: ' + getGroupValue('fitnessTracker'));
+  lines.push('');
+  lines.push('— WEIGHT HISTORY —');
+  lines.push('Dramatic weight changes: ' + getGroupValue('weightChanges') + (get('weightChangesDesc') ? ' — ' + get('weightChangesDesc') : ''));
+  lines.push('Body satisfaction: ' + get('bodySatisfaction'));
+  lines.push('Weigh frequency: ' + get('weighFrequency'));
+  lines.push('');
+  lines.push('— DISORDERED EATING HISTORY —');
+  lines.push('Eating disorder history: ' + getGroupValue('eatingDisorder') + (get('eatingDisorderDetail') ? ' — ' + get('eatingDisorderDetail') : ''));
+  lines.push('Weight control methods used: ' + getChipValues('weightControlMethods').join(', '));
+  lines.push('Guilt/anxiety after eating: ' + getGroupValue('guiltAnxiety'));
+  lines.push('Avoids foods (fear of weight gain): ' + getGroupValue('avoidFoods') + (get('avoidFoodsList') ? ' — ' + get('avoidFoodsList') : ''));
+
+  const body = encodeURIComponent(lines.join('\n'));
+  const subject = encodeURIComponent('Nutrition Assessment — ' + (get('fullName') || 'New Client'));
+  window.location.href = `mailto:eyad.bassem98@hotmail.com?subject=${subject}&body=${body}`;
+
+  document.getElementById('thanksOverlay').classList.add('active');
+});
+
+document.getElementById('thanksOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('active');
+});
+
+updateProgress();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Preferences — Evolved &amp; Balanced</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-alt: #151515;
+  --border: rgba(255,255,255,0.09);
+  --border-light: rgba(255,255,255,0.13);
+  --gold: #c9a84c;
+  --gold-bright: #d4b660;
+  --gold-glow: rgba(201, 168, 76, 0.3);
+  --gold-subtle: rgba(201, 168, 76, 0.07);
+  --cream: #e8e0d0;
+  --cream-soft: #d5cfc4;
+  --white: #f0ebe3;
+  --gray: #8a8a8a;
+  --gray-dim: #5a5a5a;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.page-nav { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-left: auto; margin-right: 28px; flex-wrap: wrap; }
+.page-nav a { color: var(--gray); font-size: 10px; font-weight: 600; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; transition: color 0.25s; }
+.page-nav a:hover, .page-nav a.active { color: var(--gold); }
+@media (max-width: 760px) { .top-bar { flex-wrap: wrap; gap: 14px; padding: 18px 24px; } .page-nav { order: 3; flex-basis: 100%; justify-content: flex-start; gap: 12px 16px; margin: 0; } }
+
+.top-bar {
+  padding: 4px 40px; display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,10,0.95); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+}
+.mark { display: flex; align-items: center; gap: 14px; min-width: 260px; }
+.mark-logo { display: flex; align-items: center; }
+.mark-logo img { display: block; width: 90px; height: 90px; object-fit: contain; }
+.mark-glyph {
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px;
+  color: var(--gold); border: 1px solid var(--border-light); border-radius: 50%;
+  width: 54px; height: 54px; display: flex; align-items: center; justify-content: center;
+}
+.mark-text { line-height: 1.2; }
+.mark-text .name { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2.5px; color: var(--white); }
+.mark-text .sub { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 3px; color: var(--gray); }
+.top-bar .doc-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--cream-soft); text-align: right; }
+
+.hero { padding: 100px 40px 70px; text-align: center; background: var(--bg); border-bottom: 1px solid var(--border); }
+.hero-eyebrow { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: var(--gold); margin-bottom: 6px; animation: fadeUp 0.9s ease-out both; }
+.hero h1 { font-family: 'Montserrat', sans-serif; font-size: clamp(30px, 5vw, 46px); font-weight: 700; letter-spacing: 5px; color: var(--white); text-transform: uppercase; line-height: 1.25; animation: fadeUp 0.9s ease-out 0.1s both; }
+.hero-rule { width: 70px; height: 1px; background: var(--gold); margin: 26px auto; animation: fadeUp 0.9s ease-out 0.2s both; }
+.hero-desc { font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.75; color: var(--cream-soft); max-width: 560px; margin: 0 auto; font-style: italic; animation: fadeUp 0.9s ease-out 0.3s both; }
+.hero-meta { margin-top: 34px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; animation: fadeUp 0.9s ease-out 0.4s both; }
+
+.form-shell { max-width: 900px; margin: 0 auto; padding: 60px 24px 100px; }
+
+.section { margin-top: 34px; animation: fadeUp 0.5s ease both; }
+.section-bar { background: var(--bg); border: 1px solid var(--border-light); padding: 18px 26px; display: flex; align-items: baseline; gap: 14px; }
+.section-bar .num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: var(--gold); }
+.section-icon { width: 24px; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 20px; line-height: 1; text-align: center; }
+.section-bar h2 { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--white); }
+.section-body { border: 1px solid var(--border); border-top: none; padding: 34px 30px; background: rgba(255,255,255,0.012); }
+.section-intro { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gray); margin-bottom: 22px; }
+.subhead { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin: 26px 0 14px; }
+.subhead:first-child { margin-top: 0; }
+
+.field { margin-bottom: 26px; }
+.field-label { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: var(--cream-soft); margin-bottom: 12px; display: block; line-height: 1.5; }
+
+.input-wrap { border: 1px solid var(--border-light); transition: border-color 0.3s, box-shadow 0.3s; background: rgba(255,255,255,0.02); }
+.input-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.12); }
+.input-wrap input, .input-wrap textarea { width: 100%; padding: 15px 16px; background: transparent; border: none; outline: none; color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 19px; }
+.input-wrap textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.input-wrap input::placeholder, .input-wrap textarea::placeholder { color: var(--gray-dim); }
+
+.pill-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill { padding: 12px 24px; border: 1px solid var(--border-light); cursor: pointer; user-select: none; font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--cream-soft); transition: all 0.25s; background: transparent; }
+.pill:hover { border-color: var(--gold); color: var(--gold); }
+.pill.active { background: rgba(201,168,76,0.16); border-color: var(--gold); color: var(--gold-bright); }
+
+.chip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.chip { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border: 1px solid var(--border); cursor: pointer; transition: all 0.25s; user-select: none; }
+.chip:hover { border-color: var(--border-light); background: rgba(255,255,255,0.02); }
+.chip.active { border-color: var(--gold); background: var(--gold-subtle); }
+.chip .box { width: 15px; height: 15px; border: 1px solid var(--gray); flex-shrink: 0; position: relative; transition: all 0.25s; }
+.chip.active .box { border-color: var(--gold); background: var(--gold); }
+.chip.active .box::after { content: ''; position: absolute; left: 4px; top: 1px; width: 3px; height: 7px; border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.chip span.label { font-family: 'Cormorant Garamond', serif; font-size: 15.5px; color: var(--cream-soft); line-height: 1.3; }
+.chip.active span.label { color: var(--white); }
+
+.divider { height: 1px; background: var(--border); margin: 30px 0; }
+
+.select-tools { display: flex; gap: 14px; margin-bottom: 16px; }
+.select-tools button { background: none; border: none; color: var(--gray); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border-bottom: 1px solid transparent; }
+.select-tools button:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+.submit-block { margin-top: 60px; text-align: center; }
+.submit-btn { padding: 18px 64px; background: var(--cream); color: var(--bg); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; transition: all 0.4s; }
+.submit-btn:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 10px 30px var(--gold-glow); }
+.submit-note { margin-top: 28px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gray); text-align: center; }
+
+.thanks-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(6,6,6,0.94); align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(6px); }
+.thanks-overlay.active { display: flex; animation: fadeIn 0.4s ease; }
+.thanks-card { max-width: 480px; text-align: center; border: 1px solid var(--border-light); background: var(--bg); padding: 56px 44px; }
+.thanks-card .glyph { font-family: 'Playfair Display', serif; font-style: italic; font-size: 30px; color: var(--gold); margin-bottom: 18px; }
+.thanks-card h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 2px; color: var(--white); text-transform: uppercase; margin-bottom: 18px; }
+.thanks-card p { font-family: 'Cormorant Garamond', serif; font-size: 17.5px; line-height: 1.7; color: var(--cream-soft); margin-bottom: 28px; }
+.thanks-card .sig { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 16px; margin-bottom: 28px; }
+.thanks-close { padding: 13px 36px; background: transparent; border: 1px solid var(--cream-soft); color: var(--cream-soft); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+.thanks-close:hover { border-color: var(--gold); color: var(--gold); }
+
+footer { padding: 34px 40px; text-align: center; border-top: 1px solid var(--border); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gray); }
+footer .brand { color: var(--gold); }
+
+@media (max-width: 900px) { .chip-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .top-bar { padding: 4px 20px; }
+  .hero { padding: 70px 20px 50px; }
+  .form-shell { padding: 40px 16px 70px; }
+  .section-body { padding: 26px 18px; }
+  .chip-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== WIZARD ===== */
+.progress-wrap { position: sticky; top: 89px; z-index: 90; background: var(--bg); padding: 16px 0 22px; border-bottom: 1px solid var(--border); }
+.progress-track { height: 2px; background: var(--border); position: relative; }
+.progress-fill { height: 2px; background: var(--gold); width: 0%; transition: width 0.4s ease; }
+.progress-text { margin-top: 10px; font-family: 'Montserrat', sans-serif; font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); display: flex; justify-content: space-between; }
+.progress-text .pct { color: var(--gold); }
+.step-dots { display: flex; gap: 7px; margin-bottom: 14px; flex-wrap: wrap; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-light); cursor: pointer; transition: all 0.3s; }
+.step-dot:hover { background: var(--gray); }
+.step-dot.done { background: var(--gold); opacity: 0.55; }
+.step-dot.current { background: var(--gold); opacity: 1; transform: scale(1.35); }
+.section { display: none; margin-top: 0 !important; }
+.section.active { display: block; animation: fadeUp 0.5s ease both; }
+.step-nav { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.wiz-btn { padding: 16px 42px; font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.35s; border: none; }
+.wiz-btn.next, .wiz-btn.submit-final { background: var(--cream); color: var(--bg); margin-left: auto; }
+.wiz-btn.next:hover, .wiz-btn.submit-final:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-glow); }
+.wiz-btn.back { background: transparent; color: var(--cream-soft); border: 1px solid var(--border-light); }
+.wiz-btn.back:hover { border-color: var(--gold); color: var(--gold); }
+@media (max-width: 640px) { .progress-wrap { top: 73px; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="mark-logo" href="index.html"><img src="logo.jpeg" alt="Evolved &amp; Balanced"></a>
+  <nav class="page-nav" aria-label="Client portal pages">
+    <a href="index.html">Home</a>
+    <a href="nutrition-assessment-updated.html">Assessment</a>
+    <a href="dietary-log.html">Dietary</a>
+    <a href="exercise-history.html">Exercise</a>
+    <a href="food-preferences.html" class="active">Preferences</a>
+    <a href="health-history.html">Health</a>
+  </nav>
+  <div class="doc-label">Food Preferences</div>
+</div>
+
+<section class="hero">
+  <div class="hero-eyebrow">Your</div>
+  <h1>Food Preferences</h1>
+  <div class="hero-rule"></div>
+  <p class="hero-desc">Where preference meets precision. This form is designed to capture your food likes, dislikes, and dietary habits — helping us create a personalized nutrition plan that's both enjoyable and aligned with your goals. Select what suits your taste, and I'll handle the science behind it.</p>
+  <div class="hero-meta">+2 01030590145 &nbsp;·&nbsp; eyad.bassem98@hotmail.com &nbsp;·&nbsp; @eyadbassem_</div>
+</section>
+
+<div class="form-shell">
+
+  <div class="progress-wrap">
+    <div class="step-dots" id="stepDots"></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text"><span id="stepLabel">Step 1</span><span class="pct" id="progressPct">0%</span></div>
+  </div>
+
+  <form id="prefsForm">
+
+  <div class="section active" data-step="1" id="step-1">
+    <div class="section-bar"><span class="num">01</span><span class="section-icon" aria-hidden="true">🍽</span><h2>Food Plan Preferences</h2></div>
+    <div class="section-body">
+      <div class="field"><label class="field-label">Would you prefer:</label>
+        <div class="pill-group" data-group="planPreference">
+          <div class="pill" data-value="Structured diet plan">A structured diet plan based on your preferences</div>
+          <div class="pill" data-value="Flexible / build own meals">The flexibility to build your own meals, guided by your calorie intake</div>
+          <div class="pill" data-value="Open to both">Open to both</div>
+        </div>
+      </div>
+      <div class="field"><label class="field-label">How will you measure your serving portion of your food choices?</label>
+        <div class="pill-group" data-group="portionMeasure">
+          <div class="pill" data-value="Raw">Raw (recommended for accuracy)</div>
+          <div class="pill" data-value="Cooked">Cooked</div>
+        </div>
+      </div>
+      <p class="section-intro" style="margin:22px 0 0;">Please tick any food you would like included in your nutrition plan. Selections will be evaluated based on your caloric needs and dietary goals.</p>
+      <div class="step-nav">
+        <span></span>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="2" id="step-2">
+    <div class="section-bar"><span class="num">02</span><span class="section-icon" aria-hidden="true">🥣</span><h2>Breakfast Options &amp; Cereals</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These options help shape the foundation of your morning meals and are often used to build consistent breakfast routines.</p>
+      <div class="chip-grid" data-group="Breakfast Options &amp; Cereals" data-items="Bran flakes|Corn flakes|Cream of wheat|Granola|Muesli|Baked oatmeal|Oatmeal|Protein oats"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="3" id="step-3">
+    <div class="section-bar"><span class="num">03</span><span class="section-icon" aria-hidden="true">🍞</span><h2>Breads &amp; Baked Products</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These options form the base of many meals — from structured plans to flexible eating styles.</p>
+      <div class="chip-grid" data-group="Breads &amp; Baked Products" data-items="Bagel|Bread|Brioche|Chapatti|Crepe|Croissant|Croutons|Dinner roll|English muffin|French roll|Lavash bread|Muffin|Naan bread|Pita bread|Puri bread|Sourdough bread|Toast|Tortilla|Waffle"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="4" id="step-4">
+    <div class="section-bar"><span class="num">04</span><span class="section-icon" aria-hidden="true">🌾</span><h2>Grains &amp; Starches</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These staples provide sustained energy and form the foundation of balanced, nourishing meals.</p>
+      <div class="chip-grid" data-group="Grains &amp; Starches" data-items="Barley|Bulgur|Chinese noodles|Corn|Couscous|Egg noodles|Farro|Flour|Oats|Pasta|Potato|Quinoa|Rice|Rice noodles|Sweet potato|Whole-wheat pasta"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="5" id="step-5">
+    <div class="section-bar"><span class="num">05</span><span class="section-icon" aria-hidden="true">🫘</span><h2>Legumes</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These protein-rich staples add texture, fiber, and balance to a wide range of meal styles.</p>
+      <div class="chip-grid" data-group="Legumes" data-items="Adzuki beans|Baby lima beans|Black beans|Black-eyed cowpeas|Cannellini beans|Chickpeas|Edamame|Falafel|Fava beans|Kidney beans|Lentils|Lima beans|Lupini beans|Navy beans|Pinto beans|Split peas|White beans"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="6" id="step-6">
+    <div class="section-bar"><span class="num">06</span><span class="section-icon" aria-hidden="true">🍲</span><h2>Soups &amp; Broths</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These nourishing options can serve as light meals, comforting starters, or warm additions to your daily routine.</p>
+      <div class="chip-grid" data-group="Soups &amp; Broths" data-items="Beef broth|Bone broth|Chicken broth|Chickpea soup|Lentil soup|Mushroom soup|Tomato soup|Vegetable soup"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="7" id="step-7">
+    <div class="section-bar"><span class="num">07</span><span class="section-icon" aria-hidden="true">🥬</span><h2>Vegetables</h2></div>
+    <div class="section-body">
+      <p class="section-intro">Essential vitamins, minerals, and fiber to support overall health and performance.</p>
+      <div class="subhead">Leafy Greens</div>
+      <div class="chip-grid" data-group="Vegetables — Leafy Greens" data-items="Arugula|Bok choy|Chard|Collard greens|Dandelion greens|Kale|Lettuce|Spinach (or Baby)"></div>
+      <div class="subhead">Cruciferous</div>
+      <div class="chip-grid" data-group="Vegetables — Cruciferous" data-items="Broccoli|Brussels sprouts|Cabbage (Green/Red)|Cauliflower"></div>
+      <div class="subhead">Colorful &amp; Fibrous</div>
+      <div class="chip-grid" data-group="Vegetables — Colorful &amp; Fibrous" data-items="Artichoke|Asparagus|Beet|Bell pepper|Carrot (or Baby)|Celery|Cucumber|Eggplant|Green pea|Mushroom|Okra|Radish|Snap beans|Taro|Tomato (or Grape)|Turnip|Zucchini"></div>
+      <div class="subhead">Aromatic &amp; Garnishes</div>
+      <div class="chip-grid" data-group="Vegetables — Aromatic &amp; Garnishes" data-items="Chili pepper|Chive|Garlic|Jalapeno pepper|Leek|Onion|Radish|Spring onion"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="8" id="step-8">
+    <div class="section-bar"><span class="num">08</span><span class="section-icon" aria-hidden="true">🍎</span><h2>Fruit</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These naturally sweet options provide essential vitamins, fiber, and variety to your daily nutrition.</p>
+      <div class="subhead">Core &amp; Stone Fruits</div>
+      <div class="chip-grid" data-group="Fruit — Core &amp; Stone Fruits" data-items="Apple|Apricot|Avocado|Cherry|Nectarine|Peach|Pear|Persimmon|Plum|Prickly pear"></div>
+      <div class="subhead">Citrus Fruits</div>
+      <div class="chip-grid" data-group="Fruit — Citrus Fruits" data-items="Clementine|Grapefruit|Lemon|Mandarin|Orange|Tangerine"></div>
+      <div class="subhead">Berries</div>
+      <div class="chip-grid" data-group="Fruit — Berries" data-items="Blackberry|Blueberry|Cranberry|Currants|Gooseberry|Grapes|Mulberries|Raspberry|Strawberry"></div>
+      <div class="subhead">Melons</div>
+      <div class="chip-grid" data-group="Fruit — Melons" data-items="Cantaloupe|Honeydew melon|Watermelon"></div>
+      <div class="subhead">Tropical &amp; Exotic</div>
+      <div class="chip-grid" data-group="Fruit — Tropical &amp; Exotic" data-items="Banana|Dates|Dragon fruit|Fig|Guava|Kiwifruit|Lychee|Mango|Papaya|Passion fruit|Pineapple|Pomegranate|Rambutan"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="9" id="step-9">
+    <div class="section-bar"><span class="num">09</span><span class="section-icon" aria-hidden="true">🍇</span><h2>Dried Fruits</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These nutrient-dense options offer concentrated energy and natural sweetness.</p>
+      <div class="chip-grid" data-group="Dried Fruits" data-items="Apple|Apricot|Banana chips|Blueberries|Cherries|Cranberries|Currant|Fig|Goji berries|Guava|Kiwi|Mango|Papaya|Peach|Pear|Persimmon|Pineapple|Prune|Raisins|Strawberries"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="10" id="step-10">
+    <div class="section-bar"><span class="num">10</span><span class="section-icon" aria-hidden="true">🥛</span><h2>Dairy</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These options provide essential calcium, protein, and richness across meal types.</p>
+      <div class="subhead">Cheeses</div>
+      <div class="chip-grid" data-group="Dairy — Cheeses" data-items="American cheese|Baramilli cheese|Blue cheese|Brie cheese|Cheddar cheese|Cottage cheese|Cream cheese|Edam cheese|Emmental cheese|Feta cheese|Gouda cheese|Halloumi cheese|Istanbouli cheese|Kashkaval cheese|Mozzarella cheese|Parmesan cheese|Parmigiano cheese|Provolone cheese|Ricotta cheese|Roquefort cheese|Roumy cheese|Swiss cheese"></div>
+      <div class="subhead">Yogurt &amp; Cultured Dairy</div>
+      <div class="chip-grid" data-group="Dairy — Yogurt &amp; Cultured Dairy" data-items="Greek yogurt|Kefir|Laban|Plain yogurt"></div>
+      <div class="subhead">Milk &amp; Creams</div>
+      <div class="chip-grid" data-group="Dairy — Milk &amp; Creams" data-items="Buttermilk|Heavy cream|Milk|Sour cream|Whipped cream"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="11" id="step-11">
+    <div class="section-bar"><span class="num">11</span><span class="section-icon" aria-hidden="true">🍗</span><h2>Poultry &amp; Meat</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These high-quality protein sources support strength, recovery, and muscle development.</p>
+      <div class="subhead">Poultry</div>
+      <div class="chip-grid" data-group="Poultry" data-items="Chicken|Duck|Egg|Ground chicken|Ground turkey|Turkey"></div>
+      <div class="subhead">Red Meat</div>
+      <div class="chip-grid" data-group="Red Meat" data-items="Beef|Goat|Ground beef|Ground lamb|Ground veal|Lamb|Rabbit|Veal"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="12" id="step-12">
+    <div class="section-bar"><span class="num">12</span><span class="section-icon" aria-hidden="true">🐟</span><h2>Fish</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These lean and fatty seafood options offer high-quality protein, essential omega-3s, and culinary versatility.</p>
+      <div class="subhead">Lean White Fish</div>
+      <div class="chip-grid" data-group="Fish — Lean White Fish" data-items="Cod|Emperor fish (Shaari)|Flounder (Moussa)|Grouper (Hamour)|Meagre fish (Lout)|Mullet (Bouri)|Nile perch (Ashr Bayyad)|Rabbitfish (Safi)|Red mullet (Morgan)|Sea bass (Aaroos)|Sea bream (Dennis)|Tilapia (Boulti)"></div>
+      <div class="subhead">Fatty Fish (High omega-3)</div>
+      <div class="chip-grid" data-group="Fish — Fatty Fish" data-items="Anchovy|Herring|Mackerel|Salmon|Smoked salmon|Sardines|Tuna"></div>
+      <div class="subhead">Shellfish</div>
+      <div class="chip-grid" data-group="Fish — Shellfish" data-items="Clams|Crab|Lobster|Mussels|Octopus|Shrimp|Squid"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="13" id="step-13">
+    <div class="section-bar"><span class="num">13</span><span class="section-icon" aria-hidden="true">🫀</span><h2>Offal &amp; Giblets</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These nutrient-dense organ meats offer concentrated protein, iron, and essential micronutrients.</p>
+      <div class="subhead">Liver</div>
+      <div class="chip-grid" data-group="Offal — Liver" data-items="Beef liver|Chicken liver|Lamb liver"></div>
+      <div class="subhead">Heart</div>
+      <div class="chip-grid" data-group="Offal — Heart" data-items="Beef heart|Lamb heart"></div>
+      <div class="subhead">Kidneys</div>
+      <div class="chip-grid" data-group="Offal — Kidneys" data-items="Beef kidney|Chicken gizzard|Lamb kidney"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="14" id="step-14">
+    <div class="section-bar"><span class="num">14</span><span class="section-icon" aria-hidden="true">🥜</span><h2>Nuts &amp; Seeds</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These nutrient-rich sources of healthy fats, fiber, and plant-based protein support satiety, energy, and overall wellness.</p>
+      <div class="subhead">Nuts</div>
+      <div class="chip-grid" data-group="Nuts" data-items="Almond|Brazil nuts|Cashews|Chestnuts|Hazelnuts|Macadamia nuts|Peanuts|Pecans|Pine nuts|Pistachios|Valencia peanut|Walnuts"></div>
+      <div class="subhead">Seeds</div>
+      <div class="chip-grid" data-group="Seeds" data-items="Black seed (Habbat Al Baraka)|Chia seeds|Fenugreek seeds|Flaxseeds|Hemp seeds|Pumpkin seeds|Sesame seeds|Sunflower seeds"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="15" id="step-15">
+    <div class="section-bar"><span class="num">15</span><span class="section-icon" aria-hidden="true">🫒</span><h2>Oils &amp; Fats</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These essential fats support hormone balance, nutrient absorption, and overall health.</p>
+      <div class="subhead">Cooking Oils</div>
+      <div class="chip-grid" data-group="Oils — Cooking Oils" data-items="Coconut oil|Cooking spray|Flaxseed oil|Hemp oil|Olive oil"></div>
+      <div class="subhead">Spreads &amp; Solid Fats</div>
+      <div class="chip-grid" data-group="Oils — Spreads &amp; Solid Fats" data-items="Butter|Ghee|Lard"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="16" id="step-16">
+    <div class="section-bar"><span class="num">16</span><span class="section-icon" aria-hidden="true">🥤</span><h2>Beverages</h2></div>
+    <div class="section-body">
+      <p class="section-intro">Hydration supports performance, energy, and digestion.</p>
+      <div class="subhead">Hydration</div>
+      <div class="chip-grid" data-group="Beverages — Hydration" data-items="Coconut water|Electrolyte drinks|Infused water|Lemon water|Sparkling water|Sports drinks|Water"></div>
+      <div class="subhead">Caffeine &amp; Teas</div>
+      <div class="chip-grid" data-group="Beverages — Caffeine &amp; Teas" data-items="Anise tea|Black tea|Chamomile|Coffee|Espresso|Green tea|Herbal tea|Hibiscus|Matcha"></div>
+      <div class="subhead">Juices &amp; Others</div>
+      <div class="chip-grid" data-group="Beverages — Juices &amp; Others" data-items="Energy drinks|Fresh juice|Packaged fruit juices|Protein shakes|Soft drinks"></div>
+      <div class="subhead">Milk Alternatives</div>
+      <div class="chip-grid" data-group="Beverages — Milk Alternatives" data-items="Almond milk|Coconut milk|Oat milk|Soy milk"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="17" id="step-17">
+    <div class="section-bar"><span class="num">17</span><span class="section-icon" aria-hidden="true">🍿</span><h2>Snacks</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These options provide flexibility, satisfaction, and variety between meals.</p>
+      <div class="subhead">Savory Snacks</div>
+      <div class="chip-grid" data-group="Snacks — Savory" data-items="Bagel chips|Crackers|Pita chips|Pop corn|Protein chips|Rice cakes|Roasted chickpeas"></div>
+      <div class="subhead">Sweet Snacks</div>
+      <div class="chip-grid" data-group="Snacks — Sweet" data-items="Dark chocolate (70%+)|Granola bar|Protein bar"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="18" id="step-18">
+    <div class="section-bar"><span class="num">18</span><span class="section-icon" aria-hidden="true">🧂</span><h2>Ingredients &amp; Add-ons</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These items add texture, flavor, and functionality to your meals.</p>
+      <div class="subhead">Cooking &amp; Prep</div>
+      <div class="chip-grid" data-group="Ingredients — Cooking &amp; Prep" data-items="Baking powder|Baking soda|Bread crumbs|Yeast"></div>
+      <div class="subhead">Flavor Enhancers &amp; Toppings</div>
+      <div class="chip-grid" data-group="Ingredients — Flavor Enhancers &amp; Toppings" data-items="Apple cider|Cocoa powder|Coconut flakes|Dukkah|Tomato paste|Tomato puree|Vanilla extract|Vinegar"></div>
+      <div class="subhead">Savory Add-ons</div>
+      <div class="chip-grid" data-group="Ingredients — Savory Add-ons" data-items="Capers|Olives|Pickles|Sun-dried tomatoes"></div>
+      <div class="subhead">Spices &amp; Seasonings</div>
+      <div class="chip-grid" data-group="Ingredients — Spices &amp; Seasonings" data-items="Chili spices|Cinnamon|Coriander|Cumin|Garlic powder|Mixed herb blends|Onion powder|Paprika|Salt &amp; pepper|Turmeric"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="19" id="step-19">
+    <div class="section-bar"><span class="num">19</span><span class="section-icon" aria-hidden="true">🫙</span><h2>Sauces, Dressings &amp; Spreads</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These sauces and spreads enhance flavor and texture across meals.</p>
+      <div class="subhead">Sauces &amp; Condiments</div>
+      <div class="chip-grid" data-group="Sauces — Sauces &amp; Condiments" data-items="Alfredo sauce|BBQ sauce|Buffalo sauce|Curry sauce|Gravy (beef/poultry)|Honey mustard|Ketchup|Marinara sauce|Mayonnaise|Mustard|Pepper hot sauce|Pesto sauce|Pizza sauce|Salsa sauce|Soy sauce|Sriracha sauce|Sweet chili sauce|Sweet &amp; sour sauce|Tabasco sauce|Tartar sauce|Worcestershire"></div>
+      <div class="subhead">Dips &amp; Dressings</div>
+      <div class="chip-grid" data-group="Sauces — Dips &amp; Dressings" data-items="Baba ghanoush|Caesar dressing|Cheese dip|Chipotle dip|French dressing|Garlic dip|Guacamole|Hummus|Italian dressing|Pomegranate molasses|Ranch dip|Ranch dressing|Salsa|Thousand island|Tzatziki|Yogurt dip"></div>
+      <div class="subhead">Spreads &amp; Butters</div>
+      <div class="chip-grid" data-group="Sauces — Spreads &amp; Butters" data-items="Almond butter|Cashew butter|Chocolate spread|Honey|Jam|Maple syrup|Peanut butter|Tahini"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="20" id="step-20">
+    <div class="section-bar"><span class="num">20</span><span class="section-icon" aria-hidden="true">🌭</span><h2>Sausages &amp; Luncheon Meats</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These options include processed meats and cold cuts commonly used in sandwiches, breakfasts, or quick meals.</p>
+      <div class="subhead">Processed Sausages</div>
+      <div class="chip-grid" data-group="Sausages — Processed" data-items="Beef bacon|Beef sausage|Chicken sausage|Hot dog"></div>
+      <div class="subhead">Cold Cuts &amp; Cured Meats</div>
+      <div class="chip-grid" data-group="Sausages — Cold Cuts &amp; Cured Meats" data-items="Bologna|Chicken breast slices|Mortadella|Pastrami|Pepperoni|Roast beef slices|Salami|Turkey breast slices"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="21" id="step-21">
+    <div class="section-bar"><span class="num">21</span><span class="section-icon" aria-hidden="true">🍰</span><h2>Desserts</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These options can be enjoyed in moderation as part of a sustainable, results-driven plan.</p>
+      <div class="chip-grid" data-group="Desserts" data-items="Baked apple w/ cinnamon|Fruit-based sorbet|Ice cream|Homemade energy bites|Jelly|Oat-based cookies|Protein brownie|Protein cookie|Protein cheesecake|Rice pudding|Sugar-free pudding|Stuffed dates w/ nut butter"></div>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="button" class="wiz-btn next" data-next>Next</button>
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="section" data-step="22" id="step-22">
+    <div class="section-bar"><span class="num">22</span><span class="section-icon" aria-hidden="true">➕</span><h2>Other Additions</h2></div>
+    <div class="section-body">
+      <p class="section-intro">These items will be evaluated and incorporated where appropriate to match your goals and preferences.</p>
+      <div class="field"><label class="field-label">Please list any specific foods, dishes, brands, or cuisines you'd like included:</label>
+        <div class="input-wrap"><textarea name="otherAdditions" rows="4" placeholder="This could be cultural meals, restaurant staples, comfort foods, or grocery preferences."></textarea></div>
+      </div>
+      <p class="submit-note">Thank you for taking the time to complete this form. Your selections will help me design a nutrition plan that truly fits your taste and goals. — Dr. Eyad Bassem</p>
+      <div class="step-nav">
+        <button type="button" class="wiz-btn back" data-back>Back</button>
+        <button type="submit" class="wiz-btn submit-final">Submit My Preferences</button>
+      </div>
+    
+    </div>
+  </div>
+
+</form>
+</div>
+
+<div class="thanks-overlay" id="thanksOverlay">
+  <div class="thanks-card">
+    <div class="glyph">&amp;</div>
+    <h3>Thank You</h3>
+    <p>Your food preferences have been recorded. I'll use these selections to design a nutrition plan that truly fits your taste and goals.</p>
+    <div class="sig">— Dr. Eyad Bassem</div>
+    <button class="thanks-close" id="thanksClose">Close</button>
+  </div>
+</div>
+
+<footer>
+  For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp; +2 01030590145 &nbsp;·&nbsp; eyad.bassem98@hotmail.com &nbsp;·&nbsp; <span class="brand">@eyadbassem_</span>
+</footer>
+
+<script>
+document.querySelectorAll('.chip-grid[data-items]').forEach(grid => {
+  grid.dataset.items.split('|').forEach(label => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.dataset.value = label.trim();
+    chip.innerHTML = `<div class="box"></div><span class="label">${label.trim()}</span>`;
+    chip.addEventListener('click', () => chip.classList.toggle('active'));
+    grid.appendChild(chip);
+  });
+});
+
+document.querySelectorAll('.pill-group').forEach(group => {
+  group.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      group.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+});
+
+function getPill(name) {
+  const g = document.querySelector(`.pill-group[data-group="${name}"]`);
+  const active = g ? g.querySelector('.pill.active') : null;
+  return active ? active.dataset.value : '';
+}
+function getChips(group) {
+  return Array.from(group.querySelectorAll('.chip.active')).map(c => c.dataset.value);
+}
+
+
+/* ===== WIZARD CONTROLLER ===== */
+const steps = Array.from(document.querySelectorAll('.section'));
+const totalSteps = steps.length;
+const stepTitles = steps.map(s => s.querySelector('.section-bar h2').textContent);
+let currentStep = 1;
+
+const dotsWrap = document.getElementById('stepDots');
+stepTitles.forEach((title, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'step-dot';
+  dot.title = title;
+  dot.addEventListener('click', () => { if (i + 1 < currentStep) goToStep(i + 1); });
+  dotsWrap.appendChild(dot);
+});
+
+function goToStep(n) {
+  n = Math.max(1, Math.min(totalSteps, n));
+  steps.forEach(s => s.classList.remove('active'));
+  const target = steps.find(s => s.dataset.step === String(n));
+  target.classList.add('active');
+  currentStep = n;
+  updateProgress();
+  document.querySelector('.progress-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelectorAll('[data-next]').forEach(btn => {
+  btn.addEventListener('click', () => goToStep(currentStep + 1));
+});
+document.querySelectorAll('[data-back]').forEach(btn => {
+  btn.addEventListener('click', () => goToStep(currentStep - 1));
+});
+
+function updateProgress() {
+  const pct = Math.round((currentStep / totalSteps) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('stepLabel').textContent = `Step ${currentStep} of ${totalSteps} \u00b7 ${stepTitles[currentStep - 1]}`;
+  document.querySelectorAll('.step-dot').forEach((dot, i) => {
+    dot.classList.toggle('current', i + 1 === currentStep);
+    dot.classList.toggle('done', i + 1 < currentStep);
+  });
+}
+
+updateProgress();
+
+document.getElementById('prefsForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const lines = [];
+  lines.push('FOOD PREFERENCES');
+  lines.push('');
+  lines.push('Plan preference: ' + getPill('planPreference'));
+  lines.push('Portion measurement: ' + getPill('portionMeasure'));
+  lines.push('');
+  document.querySelectorAll('.chip-grid[data-group]').forEach(grid => {
+    const selected = getChips(grid);
+    if (selected.length) {
+      lines.push('— ' + grid.dataset.group.replace(/&amp;/g, '&') + ' —');
+      lines.push(selected.join(', '));
+      lines.push('');
+    }
+  });
+  const other = (document.querySelector('[name="otherAdditions"]').value || '').trim();
+  if (other) { lines.push('Other additions: ' + other); }
+
+  const body = encodeURIComponent(lines.join('\n'));
+  const subject = encodeURIComponent('Food Preferences — New Submission');
+  window.location.href = `mailto:eyad.bassem98@hotmail.com?subject=${subject}&body=${body}`;
+
+  document.getElementById('thanksOverlay').classList.add('active');
+});
+document.getElementById('thanksClose').addEventListener('click', () => document.getElementById('thanksOverlay').classList.remove('active'));
+</script>
+
+</body>
+</html>
