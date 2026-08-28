@@ -1,3 +1,5 @@
+import { getCurrentUser, logout } from './auth-api.js';
+
 (function () {
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
   const isTemplate = window.location.pathname.includes('/templates/');
@@ -52,7 +54,9 @@
     </div>
     <a href="${prefix}auth-updated.html" class="nav-cta" data-nav="start">Start Now</a>
     <button type="button" class="hamburger" aria-label="Open navigation menu" aria-expanded="false">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>`;
 
   if (!nav.parentNode) document.body.insertBefore(nav, document.body.firstChild);
@@ -96,6 +100,32 @@
       links.classList.remove('open');
       menuButton.setAttribute('aria-expanded', 'false');
       closeDropdowns();
+    });
+  });
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  getCurrentUser().then((user) => {
+    if (!user) return;
+    const cta = nav.querySelector('.nav-cta');
+    if (!cta) return;
+    const first = escapeHtml((user.fullName || 'there').split(' ')[0]);
+    const wrap = document.createElement('div');
+    wrap.className = 'nav-account';
+    wrap.innerHTML = `
+      <span class="nav-user">Hi, ${first}</span>
+      <button type="button" class="nav-cta" data-nav="start">Sign Out</button>
+    `;
+    cta.replaceWith(wrap);
+    wrap.querySelector('.nav-cta').addEventListener('click', async () => {
+      await logout();
+      window.location.href = prefix + 'auth-updated.html';
     });
   });
 })();

@@ -2,6 +2,7 @@ import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { readdir, readFile } from 'fs/promises';
 import { defineConfig } from 'vite';
+import { createApiRouter } from './server/app.js';
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
@@ -17,6 +18,15 @@ async function collectFiles(directory) {
     }
   }
   return files;
+}
+
+function localAuthApi() {
+  return {
+    name: 'local-auth-api',
+    async configureServer(server) {
+      server.middlewares.use('/api', await createApiRouter());
+    },
+  };
 }
 
 function copyStaticAssets() {
@@ -49,7 +59,7 @@ function copyStaticAssets() {
 }
 
 export default defineConfig({
-  plugins: [copyStaticAssets()],
+  plugins: [localAuthApi(), copyStaticAssets()],
   server: {
     host: '0.0.0.0',
     port: 3000,

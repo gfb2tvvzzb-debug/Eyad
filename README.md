@@ -1,6 +1,6 @@
 # Eyad Wellness Site
 
-This project is a static multi-page health and wellness website built with HTML and CSS, powered by Vite for local development and build tooling.
+This project is a multi-page health and wellness website built with HTML and CSS, powered by Vite for local development. Sign-in and registration are stored in a local SQLite database (`data/app.db`).
 
 ## Getting started
 
@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Then open the local URL shown in the terminal.
+Then open the local URL shown in the terminal. Create an account on `auth-updated.html` — the API lives at `/api` on the same origin.
 
 ## Production build
 
