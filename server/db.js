@@ -37,6 +37,15 @@ function statement(sql) {
       stmt.free();
       return row;
     },
+    all() {
+      const params = Array.prototype.slice.call(arguments);
+      const stmt = db.prepare(sql);
+      stmt.bind(params);
+      const rows = [];
+      while (stmt.step()) rows.push(stmt.getAsObject());
+      stmt.free();
+      return rows;
+    },
   };
 }
 
@@ -88,6 +97,20 @@ export async function initDb() {
     CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
     CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
     CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
+
+    CREATE TABLE IF NOT EXISTS assignment_submissions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      assignment_key TEXT NOT NULL,
+      assignment_title TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      summary TEXT,
+      submitted_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_submissions_user ON assignment_submissions(user_id);
+    CREATE INDEX IF NOT EXISTS idx_submissions_assignment ON assignment_submissions(assignment_key);
+    CREATE INDEX IF NOT EXISTS idx_submissions_user_assignment ON assignment_submissions(user_id, assignment_key);
   `);
 }
 

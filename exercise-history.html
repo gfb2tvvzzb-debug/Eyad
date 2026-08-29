@@ -236,6 +236,7 @@ footer .brand { color: var(--gold); }
 
 <footer>For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp; +2 01030590145 &nbsp;·&nbsp; eyad.bassem98@hotmail.com &nbsp;·&nbsp; <span class="brand">@eyadbassem_</span></footer>
 
+<script type="module" src="./assets/js/form-save.js"></script>
 <script>
 document.querySelectorAll('.chip-grid[data-items]').forEach(grid => {
   grid.dataset.items.split('|').forEach(label => {
@@ -317,7 +318,7 @@ function updateProgress() {
 
 updateProgress();
 
-document.getElementById('exerciseForm').addEventListener('submit', function(e) {
+document.getElementById('exerciseForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const get = n => (fd.get(n) || '').toString().trim();
@@ -348,6 +349,9 @@ document.getElementById('exerciseForm').addEventListener('submit', function(e) {
   lines.push('');
   lines.push('— INJURY STATUS —');
   lines.push('Pain during activity: ' + getPill('painDuringActivity') + (get('painDetail') ? ' — ' + get('painDetail') : ''));
+
+  const saved = await window.EBForms.saveFormAssignment(this, 'exercise-history', lines.join('\n'));
+  if (!saved) return;
 
   const body = encodeURIComponent(lines.join('\n'));
   const subject = encodeURIComponent('Exercise History — ' + (get('fullName') || 'New Client'));

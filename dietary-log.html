@@ -212,6 +212,7 @@ footer .brand { color: var(--gold); }
 
 <footer>For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp; +2 01030590145 &nbsp;·&nbsp; eyad.bassem98@hotmail.com &nbsp;·&nbsp; <span class="brand">@eyadbassem_</span></footer>
 
+<script type="module" src="./assets/js/form-save.js"></script>
 <script>
 const dayLogsWrap = document.getElementById('dayLogs');
 const DAY_COUNT = 3;
@@ -324,7 +325,7 @@ document.querySelectorAll('.add-row-btn').forEach(btn => {
   btn.addEventListener('click', () => addLogRow(btn.dataset.day));
 });
 
-document.getElementById('logForm').addEventListener('submit', function(e) {
+document.getElementById('logForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const get = n => (fd.get(n) || '').toString().trim();
@@ -351,6 +352,9 @@ document.getElementById('logForm').addEventListener('submit', function(e) {
     });
     if (!any) lines.push('(no entries)');
   }
+
+  const saved = await window.EBForms.saveFormAssignment(this, 'dietary-log', lines.join('\n'));
+  if (!saved) return;
 
   const body = encodeURIComponent(lines.join('\n'));
   const subject = encodeURIComponent('Dietary Log — ' + (clientName || 'New Client'));

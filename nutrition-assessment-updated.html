@@ -637,6 +637,7 @@ footer .brand { color: var(--gold); }
   </div>
 </div>
 
+<script type="module" src="./assets/js/form-save.js"></script>
 <script>
 const dateStamp = document.getElementById('dateStamp');
 if (dateStamp) dateStamp.textContent = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
@@ -761,7 +762,7 @@ function updateProgress() {
   });
 }
 
-document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+document.getElementById('assessmentForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const get = (n) => (fd.get(n) || '').toString().trim();
@@ -837,6 +838,9 @@ document.getElementById('assessmentForm').addEventListener('submit', function(e)
   lines.push('Weight control methods used: ' + getChipValues('weightControlMethods').join(', '));
   lines.push('Guilt/anxiety after eating: ' + getGroupValue('guiltAnxiety'));
   lines.push('Avoids foods (fear of weight gain): ' + getGroupValue('avoidFoods') + (get('avoidFoodsList') ? ' — ' + get('avoidFoodsList') : ''));
+
+  const saved = await window.EBForms.saveFormAssignment(this, 'nutrition-assessment', lines.join('\n'));
+  if (!saved) return;
 
   const body = encodeURIComponent(lines.join('\n'));
   const subject = encodeURIComponent('Nutrition Assessment — ' + (get('fullName') || 'New Client'));

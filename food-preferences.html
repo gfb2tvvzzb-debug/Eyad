@@ -565,6 +565,7 @@ footer .brand { color: var(--gold); }
   For questions, reach out via WhatsApp or Instagram &nbsp;·&nbsp; +2 01030590145 &nbsp;·&nbsp; eyad.bassem98@hotmail.com &nbsp;·&nbsp; <span class="brand">@eyadbassem_</span>
 </footer>
 
+<script type="module" src="./assets/js/form-save.js"></script>
 <script>
 document.querySelectorAll('.chip-grid[data-items]').forEach(grid => {
   grid.dataset.items.split('|').forEach(label => {
@@ -641,7 +642,7 @@ function updateProgress() {
 
 updateProgress();
 
-document.getElementById('prefsForm').addEventListener('submit', function(e) {
+document.getElementById('prefsForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const lines = [];
   lines.push('FOOD PREFERENCES');
@@ -659,6 +660,9 @@ document.getElementById('prefsForm').addEventListener('submit', function(e) {
   });
   const other = (document.querySelector('[name="otherAdditions"]').value || '').trim();
   if (other) { lines.push('Other additions: ' + other); }
+
+  const saved = await window.EBForms.saveFormAssignment(this, 'food-preferences', lines.join('\n'));
+  if (!saved) return;
 
   const body = encodeURIComponent(lines.join('\n'));
   const subject = encodeURIComponent('Food Preferences — New Submission');

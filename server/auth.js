@@ -87,7 +87,7 @@ function createSession(userId, remember) {
   return { id, maxAge };
 }
 
-function getUserFromRequest(req) {
+export function getUserFromRequest(req) {
   const cookies = parseCookies(req.headers.cookie);
   const sessionId = cookies[COOKIE_NAME];
   if (!sessionId) return null;
@@ -99,10 +99,19 @@ function getUserFromRequest(req) {
   return row || null;
 }
 
-function sendJson(res, status, body) {
+export function sendJson(res, status, body) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.end(JSON.stringify(body));
+}
+
+export function requireUser(req, res) {
+  const user = getUserFromRequest(req);
+  if (!user) {
+    sendJson(res, 401, { error: 'Sign in to continue.' });
+    return null;
+  }
+  return user;
 }
 
 export function attachAuthRoutes(router) {
