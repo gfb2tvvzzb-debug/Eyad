@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Evolved & Balanced</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/common.css" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-alt: #121212;
+      --panel: rgba(255,255,255,0.03);
+      --panel-strong: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.08);
+      --gold: #c9a84c;
+      --gold-soft: rgba(201,168,76,0.12);
+      --cream: #e8e0d0;
+      --cream-soft: #d9d1c2;
+      --white: #f4f1ec;
+      --gray: #8a8a8a;
+      --danger: #bd6e5a;
+      --success: #7aa27a;
+      --warn: #c89d48;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 30px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ghost-btn, .primary-btn, .chip-btn {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--cream);
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      font-size: 10px;
+      padding: 10px 16px;
+      transition: all 0.2s ease;
+    }
+    .primary-btn {
+      background: var(--gold);
+      color: #111;
+      border-color: var(--gold);
+    }
+    .ghost-btn:hover, .primary-btn:hover, .chip-btn:hover {
+      transform: translateY(-1px);
+    }
+    .secondary-btn {
+      background: rgba(201,168,76,0.1);
+      border-color: rgba(201,168,76,0.4);
+      color: var(--gold);
+      padding: 8px 12px;
+      font-size: 11px;
+    }
+    .secondary-btn:hover {
+      background: rgba(201,168,76,0.15);
+      border-color: rgba(201,168,76,0.6);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 28px 0 36px;
+    }
+    .stat-card {
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      padding: 20px;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.12);
+    }
+    .stat-label {
+      display: block;
+      color: var(--gray);
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .clients-section {
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin: 0 0 20px;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+    .search-box {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 10px;
+    }
+    .search-input {
+      flex: 1;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: var(--cream);
+      font-size: 13px;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.08);
+    }
+    .search-input::placeholder {
+      color: var(--gray);
+    }
+    .clients-table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .clients-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .clients-table thead {
+      background: rgba(255,255,255,0.02);
+    }
+    .clients-table th {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      color: var(--cream-soft);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .clients-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--white);
+      font-size: 13px;
+    }
+    .clients-table tr:hover {
+      background: rgba(255,255,255,0.02);
+    }
+    .client-name-cell {
+      font-weight: 600;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .client-name-cell:hover {
+      color: var(--gold);
+    }
+    .client-email-cell {
+      color: var(--gray);
+      font-size: 12px;
+    }
+    .form-status-badge-small {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .form-status-badge-small:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .form-status-badge-small.submitted {
+      background: rgba(122,162,122,0.2);
+      color: #bfddbf;
+      border: 1px solid rgba(122,162,122,0.4);
+    }
+    .form-status-badge-small.submitted:hover {
+      background: rgba(122,162,122,0.3);
+      border-color: rgba(122,162,122,0.6);
+    }
+    .form-status-badge-small.sent {
+      background: rgba(201,168,76,0.2);
+      color: #f1d38a;
+      border: 1px solid rgba(201,168,76,0.4);
+    }
+    .form-status-badge-small.sent:hover {
+      background: rgba(201,168,76,0.3);
+      border-color: rgba(201,168,76,0.6);
+    }
+    .form-status-badge-small.not-assigned {
+      background: rgba(189,110,90,0.2);
+      color: #f2b5a6;
+      border: 1px solid rgba(189,110,90,0.4);
+    }
+    .form-status-badge-small.not-assigned:hover {
+      background: rgba(189,110,90,0.3);
+      border-color: rgba(189,110,90,0.6);
+    }
+    .actions-cell {
+      white-space: nowrap;
+    }
+    .actions-cell button {
+      padding: 6px 10px;
+      font-size: 10px;
+      margin-right: 4px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray);
+    }
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    .empty-state-text {
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.6;
+    }
+    .notice {
+      padding: 14px 16px;
+      border-radius: 3px;
+      margin-bottom: 24px;
+      display: none;
+      border-left: 4px solid var(--gold);
+      background: rgba(201,168,76,0.1);
+      color: var(--cream);
+      font-size: 13px;
+    }
+    .notice.show { display: block; }
+    .notice.error {
+      border-left-color: var(--danger);
+      background: rgba(189,110,90,0.1);
+      color: #f2b5a6;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: var(--bg-alt);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 28px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      color: var(--white);
+    }
+    .modal-text {
+      font-size: 13px;
+      color: var(--cream-soft);
+      margin: 0 0 20px;
+      line-height: 1.6;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .modal-actions button {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 11px;
+    }
+    .submissions-section {
+      margin-top: 48px;
+    }
+    .submissions-section h2 {
+      margin-bottom: 8px;
+    }
+    .submissions-filter {
+      font-size: 12px;
+      color: var(--gold);
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      background: rgba(201,168,76,0.1);
+      border-left: 3px solid var(--gold);
+      border-radius: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .submissions-filter button {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .submissions-filter button:hover {
+      background: rgba(201,168,76,0.2);
+    }
+    .submission-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+    .submission-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .submission-card:hover {
+      border-color: rgba(201,168,76,0.3);
+      background: rgba(255,255,255,0.04);
+    }
+    .submission-header {
+      margin-bottom: 14px;
+    }
+    .submission-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      margin: 0 0 8px;
+    }
+    .submission-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--gray);
+    }
+    .submission-client {
+      margin: 12px 0;
+      font-size: 13px;
+    }
+    .submission-client strong {
+      color: var(--cream);
+    }
+    .submission-summary {
+      margin: 14px 0;
+      padding: 14px;
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid var(--gold);
+      font-size: 13px;
+      color: var(--cream-soft);
+      line-height: 1.6;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .submission-summary-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .submission-details {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      font-size: 11px;
+      color: var(--gray);
+    }
+    .detail-row {
+      margin: 6px 0;
+      display: flex;
+      gap: 10px;
+    }
+    .detail-label {
+      color: var(--cream-soft);
+      font-weight: 500;
+      min-width: 100px;
+    }
+    @media (max-width: 768px) {
+      .page-shell { padding: 24px 16px 60px; }
+      .topbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .actions { width: 100%; }
+      .actions button { flex: 1; }
+      .client-grid { grid-template-columns: 1fr; }
+      .submission-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">E</div>
+        <h1>Admin Dashboard</h1>
+      </div>
+      <div class="actions">
+        <button class="ghost-btn" id="refreshBtn" type="button">↻ Refresh</button>
+        <button class="primary-btn" id="logoutBtn" type="button">Sign Out</button>
+      </div>
+    </header>
+
+    <section class="stats" id="statsGrid"></section>
+
+    <div class="notice" id="noticeBox"></div>
+
+    <section class="clients-section">
+      <h2 class="section-title">Clients</h2>
+      <div class="search-box">
+        <input type="text" class="search-input" id="clientSearch" placeholder="Search clients by name or email..." />
+      </div>
+      <div class="clients-table-wrap">
+        <table class="clients-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Forms</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="clientsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="submissions-section">
+      <h2 class="section-title">Completed Submissions</h2>
+      <div id="submissionsFilter" class="submissions-filter" style="display: none;">
+        <span id="filterText"></span>
+        <button id="clearFilter">Clear Filter</button>
+      </div>
+      <div class="submission-grid" id="submissionList"></div>
+    </section>
+  </div>
+
+  <div class="modal-overlay" id="inviteModal">
+    <div class="modal">
+      <h3 class="modal-title">Send Invite</h3>
+      <p class="modal-text" id="modalText"></p>
+      <div class="modal-actions">
+        <button class="ghost-btn" id="modalCancel" type="button">Cancel</button>
+        <button class="primary-btn" id="modalConfirm" type="button">Send Invite</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const ASSIGNMENT_LABELS = {
+      'nutrition-assessment': 'Nutrition Assessment',
+      'dietary-log': 'Dietary Log',
+      'exercise-history': 'Exercise History',
+      'food-preferences': 'Food Preferences',
+      'health-history': 'Health History',
+    };
+
+    const statsGrid = document.getElementById('statsGrid');
+    const clientsTable = document.getElementById('clientsTable');
+    const clientSearch = document.getElementById('clientSearch');
+    const noticeBox = document.getElementById('noticeBox');
+    const submissionList = document.getElementById('submissionList');
+    const inviteModal = document.getElementById('inviteModal');
+    const modalText = document.getElementById('modalText');
+    const modalConfirm = document.getElementById('modalConfirm');
+    const modalCancel = document.getElementById('modalCancel');
+
+    let pendingInvite = null;
+    let allUsers = [];
+    let filteredUsers = [];
+    let allSubmissions = [];
+    let selectedClientId = null;
+
+    function showNotice(message, isError = false) {
+      noticeBox.textContent = message;
+      noticeBox.classList.add('show');
+      if (isError) noticeBox.classList.add('error');
+      else noticeBox.classList.remove('error');
+      setTimeout(() => { noticeBox.classList.remove('show'); }, 4000);
+    }
+
+    function showInviteModal(user, assignmentKey) {
+      const formLabel = ASSIGNMENT_LABELS[assignmentKey] || assignmentKey;
+      const userName = user.fullName || user.email;
+      modalText.textContent = `Send an invite to ${userName} for the ${formLabel} form?`;
+      pendingInvite = { user, assignmentKey };
+      inviteModal.classList.add('show');
+    }
+
+    function closeInviteModal() {
+      inviteModal.classList.remove('show');
+      pendingInvite = null;
+    }
+
+    function renderStats(users) {
+      const totalUsers = users.length;
+      let pending = 0;
+      let sent = 0;
+      let submitted = 0;
+
+      for (const user of users) {
+        for (const form of Object.values(user.forms || {})) {
+          if (form.status === 'submitted') submitted += 1;
+          else if (form.status === 'sent') sent += 1;
+          else if (form.status === 'pending' || form.status === 'not-assigned') pending += 1;
+        }
+      }
+
+      statsGrid.innerHTML = `
+        <div class="stat-card">
+          <span class="stat-label">Total Clients</span>
+          <div class="stat-value">${totalUsers}</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Awaiting Invite</span>
+          <div class="stat-value">${pending}</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Invited</span>
+          <div class="stat-value">${sent}</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Completed</span>
+          <div class="stat-value">${submitted}</div>
+        </div>
+      `;
+    }
+
+    function filterClients(query) {
+      const q = query.toLowerCase().trim();
+      if (!q) {
+        filteredUsers = allUsers;
+      } else {
+        filteredUsers = allUsers.filter(user => 
+          (user.fullName || '').toLowerCase().includes(q) ||
+          (user.email || '').toLowerCase().includes(q)
+        );
+      }
+      renderClientsTable(filteredUsers);
+    }
+
+    function renderClientsTable(users) {
+      if (!users.length) {
+        clientsTable.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 30px; color: var(--gray);">No clients found.</td></tr>`;
+        return;
+      }
+
+      clientsTable.innerHTML = users.map((user) => {
+        const formEntries = Object.entries(user.forms || {}).sort(([a], [b]) => a.localeCompare(b));
+        const unassigned = formEntries.filter(([, f]) => f.status === 'not-assigned');
+        
+        const statusHtml = formEntries.map(([key, form]) => {
+          const badge = form.status === 'submitted' ? 'submitted' : form.status === 'sent' ? 'sent' : 'not-assigned';
+          return `<span class="form-status-badge-small ${badge}" data-user-id="${user.id}" data-assignment-key="${key}" title="Click to send invite">${form.status}</span>`;
+        }).join('');
+
+        const buttonHtml = unassigned.length > 0 
+          ? `<button class="secondary-btn" type="button" data-user-id="${user.id}" data-action="invite-all">Invite All</button>`
+          : '<button class="secondary-btn" disabled style="opacity:0.5;">All Invited</button>';
+
+        const isSelected = user.id === selectedClientId ? 'style="background: rgba(201,168,76,0.1);"' : '';
+
+        return `
+          <tr ${isSelected}>
+            <td>
+              <div class="client-name-cell" data-user-id="${user.id}" style="cursor: pointer; color: var(--gold);" title="Click to view submissions">
+                ${user.fullName || 'Unnamed'}
+              </div>
+            </td>
+            <td>
+              <div class="client-email-cell">${user.email}</div>
+            </td>
+            <td>${statusHtml || '<span style="color: var(--gray);">No forms</span>'}</td>
+            <td class="actions-cell">${buttonHtml}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Add click handlers to client names
+      clientsTable.querySelectorAll('[data-user-id]').forEach((el) => {
+        if (el.classList.contains('client-name-cell')) {
+          el.addEventListener('click', () => {
+            selectedClientId = Number(el.dataset.userId);
+            filterSubmissions();
+            renderClientsTable(filteredUsers);
+          });
+        }
+      });
+
+      // Add click handlers to form status badges
+      clientsTable.querySelectorAll('.form-status-badge-small').forEach((badge) => {
+        badge.addEventListener('click', () => {
+          const userId = Number(badge.dataset.userId);
+          const assignmentKey = badge.dataset.assignmentKey;
+          const user = filteredUsers.find(u => u.id === userId);
+          if (user) {
+            showInviteModal(user, assignmentKey);
+          }
+        });
+      });
+
+      // Add click handlers to invite buttons
+      clientsTable.querySelectorAll('[data-action="invite-all"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const userId = Number(btn.dataset.userId);
+          const user = filteredUsers.find((u) => u.id === userId);
+          const unassigned = Object.entries(user?.forms || {})
+            .filter(([, f]) => f.status === 'not-assigned')
+            .map(([k]) => k);
+          
+          if (unassigned.length === 1) {
+            showInviteModal(user, unassigned[0]);
+          } else if (unassigned.length > 1) {
+            pendingInvite = { user, assignmentKeys: unassigned };
+            modalText.textContent = `Send invites to ${user.fullName || user.email} for ${unassigned.length} forms?`;
+            inviteModal.classList.add('show');
+          }
+        });
+      });
+    }
+
+    function filterSubmissions() {
+      const filterEl = document.getElementById('submissionsFilter');
+      const filterText = document.getElementById('filterText');
+      
+      if (selectedClientId) {
+        const client = allUsers.find(u => u.id === selectedClientId);
+        filterText.textContent = `Showing submissions for ${client?.fullName || 'Client'}`;
+        filterEl.style.display = 'flex';
+        renderSubmissions(allSubmissions.filter(s => s.userId === selectedClientId));
+      } else {
+        filterEl.style.display = 'none';
+        renderSubmissions(allSubmissions);
+      }
+    }
+
+    function formatPayloadAsText(payload, assignmentKey) {
+      const sections = [];
+      
+      if (payload.fields) {
+        for (const [key, value] of Object.entries(payload.fields)) {
+          if (value) sections.push(`${key}: ${Array.isArray(value) ? value.join(', ') : value}`);
+        }
+      }
+      
+      if (payload.pills) {
+        for (const [key, value] of Object.entries(payload.pills)) {
+          if (value) sections.push(`${key}: ${value}`);
+        }
+      }
+      
+      if (payload.chips) {
+        for (const [key, values] of Object.entries(payload.chips)) {
+          if (values && values.length) sections.push(`${key}: ${values.join(', ')}`);
+        }
+      }
+      
+      if (payload.radios) {
+        for (const [key, value] of Object.entries(payload.radios)) {
+          if (value) sections.push(`${key}: ${value}`);
+        }
+      }
+      
+      if (payload.pain && payload.pain.length) {
+        sections.push(`Pain areas: ${payload.pain.join(', ')}`);
+      }
+      
+      return sections.slice(0, 8).join('\n');
+    }
+
+    function renderSubmissions(submissions) {
+      if (!submissions.length) {
+        submissionList.innerHTML = `
+          <div class="empty-state" style="grid-column: 1/-1;">
+            <div class="empty-state-icon">📋</div>
+            <p class="empty-state-text">No submissions yet.<br>Completed forms will appear here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      submissionList.innerHTML = submissions.map((item) => {
+        const payloadText = formatPayloadAsText(item.payload || {}, item.assignmentKey);
+        return `
+          <div class="submission-card">
+            <div class="submission-header">
+              <div class="submission-title">${ASSIGNMENT_LABELS[item.assignmentKey] || item.assignmentKey}</div>
+              <div class="submission-meta">
+                <span>${item.fullName || 'Client'}</span>
+                <span>${new Date(item.submittedAt).toLocaleDateString()}</span>
+              </div>
+            </div>
+            <div class="submission-client">
+              <strong>Email:</strong> ${item.email || '—'}
+            </div>
+            ${item.summary ? `
+              <div class="submission-summary">
+                <div class="submission-summary-title">Summary</div>
+                ${item.summary}
+              </div>
+            ` : ''}
+            ${payloadText ? `
+              <div class="submission-details">
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--cream-soft);">Details</div>
+                <div style="white-space: pre-wrap; font-family: monospace; font-size: 11px;">${escapeHtml(payloadText)}</div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch('/api/admin/dashboard', { credentials: 'same-origin' });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(data.error || 'Could not load admin dashboard.');
+        }
+        allUsers = data.users || [];
+        filteredUsers = allUsers;
+        allSubmissions = data.submissions || [];
+        selectedClientId = null;
+        renderStats(allUsers);
+        renderClientsTable(filteredUsers);
+        filterSubmissions();
+      } catch (error) {
+        showNotice(error.message || 'Could not load the admin dashboard.', true);
+      }
+    }
+
+    async function sendInvite() {
+      if (!pendingInvite) return;
+      
+      const keys = pendingInvite.assignmentKeys || [pendingInvite.assignmentKey];
+      closeInviteModal();
+
+      for (const key of keys) {
+        try {
+          const res = await fetch('/api/admin/assign-form', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: pendingInvite.user.id, assignmentKey: key }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'Could not send invite');
+        } catch (error) {
+          showNotice(`Failed to send invite for ${ASSIGNMENT_LABELS[key]}`, true);
+          return;
+        }
+      }
+      
+      showNotice(`✓ Invite${keys.length > 1 ? 's' : ''} sent successfully!`);
+      setTimeout(() => loadDashboard(), 800);
+    }
+
+    clientSearch.addEventListener('input', (e) => {
+      filterClients(e.target.value);
+      selectedClientId = null;
+      document.getElementById('submissionsFilter').style.display = 'none';
+    });
+
+    document.getElementById('clearFilter').addEventListener('click', () => {
+      selectedClientId = null;
+      filterSubmissions();
+      renderClientsTable(filteredUsers);
+    });
+
+    modalConfirm.addEventListener('click', sendInvite);
+    modalCancel.addEventListener('click', closeInviteModal);
+    inviteModal.addEventListener('click', (e) => {
+      if (e.target === inviteModal) closeInviteModal();
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', loadDashboard);
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+      window.location.href = '/auth-updated.html';
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

@@ -2,6 +2,7 @@ import express from 'express';
 import { initDb } from './db.js';
 import { attachAuthRoutes } from './auth.js';
 import { attachAssignmentRoutes } from './assignments.js';
+import { attachAdminRoutes } from './admin.js';
 
 export async function createApiRouter() {
   await initDb();
@@ -14,5 +15,6 @@ export async function createApiRouter() {
   });
   attachAuthRoutes(router);
   attachAssignmentRoutes(router);
+  attachAdminRoutes(router);
   return router;
 }

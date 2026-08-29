@@ -98,6 +98,28 @@ export async function initDb() {
     CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
     CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
 
+    CREATE TABLE IF NOT EXISTS user_form_assignments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      assignment_key TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      assigned_at TEXT NOT NULL DEFAULT (datetime('now')),
+      sent_at TEXT,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      notes TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS user_notifications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      kind TEXT NOT NULL DEFAULT 'info',
+      related_assignment_key TEXT,
+      is_read INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS assignment_submissions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -108,6 +130,11 @@ export async function initDb() {
       submitted_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE INDEX IF NOT EXISTS idx_user_form_assignments_user ON user_form_assignments(user_id);
+    CREATE INDEX IF NOT EXISTS idx_user_form_assignments_key ON user_form_assignments(assignment_key);
+    CREATE INDEX IF NOT EXISTS idx_user_form_assignments_user_key ON user_form_assignments(user_id, assignment_key);
+    CREATE INDEX IF NOT EXISTS idx_notifications_user ON user_notifications(user_id);
+    CREATE INDEX IF NOT EXISTS idx_notifications_read ON user_notifications(user_id, is_read);
     CREATE INDEX IF NOT EXISTS idx_submissions_user ON assignment_submissions(user_id);
     CREATE INDEX IF NOT EXISTS idx_submissions_assignment ON assignment_submissions(assignment_key);
     CREATE INDEX IF NOT EXISTS idx_submissions_user_assignment ON assignment_submissions(user_id, assignment_key);
