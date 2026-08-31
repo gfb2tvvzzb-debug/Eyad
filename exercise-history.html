@@ -78,7 +78,7 @@ body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(
 .chip.active span.label { color: var(--white); }
 
 .conditional { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; opacity: 0; margin-top: 0; }
-.conditional.open { max-height: 400px; opacity: 1; margin-top: 16px; }
+.conditional.open { opacity: 1; margin-top: 16px; }
 
 .divider { height: 1px; background: var(--border); margin: 30px 0; }
 
@@ -250,6 +250,11 @@ document.querySelectorAll('.chip-grid[data-items]').forEach(grid => {
   });
 });
 
+function setConditionalOpen(box, open) {
+  box.classList.toggle('open', open);
+  box.style.maxHeight = open ? box.scrollHeight + 'px' : '0px';
+}
+
 document.querySelectorAll('.pill-group').forEach(group => {
   group.querySelectorAll('.pill').forEach(pill => {
     pill.addEventListener('click', () => {
@@ -257,9 +262,20 @@ document.querySelectorAll('.pill-group').forEach(group => {
       pill.classList.add('active');
       if (group.dataset.reveal) {
         const box = document.getElementById(group.dataset.reveal);
-        if (box) box.classList.toggle('open', pill.dataset.value === 'Yes');
+        if (box) setConditionalOpen(box, pill.dataset.value === 'Yes');
       }
     });
+  });
+});
+
+// Re-measure open conditional boxes on chip toggle / resize / orientation change,
+// so the reveal box always fits its content instead of clipping it.
+document.querySelectorAll('.conditional.open').forEach(box => {
+  box.style.maxHeight = box.scrollHeight + 'px';
+});
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.conditional.open').forEach(box => {
+    box.style.maxHeight = box.scrollHeight + 'px';
   });
 });
 
