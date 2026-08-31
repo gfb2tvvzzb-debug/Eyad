@@ -172,6 +172,21 @@ body {
 .input-wrap textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
 .input-wrap input::placeholder, .input-wrap textarea::placeholder { color: var(--gray-dim); }
 
+.input-wrap.select-wrap { position: relative; }
+.input-wrap select {
+  width: 100%; padding: 15px 40px 15px 16px; background: transparent; border: none; outline: none;
+  color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 19px;
+  -webkit-appearance: none; appearance: none; cursor: pointer;
+}
+.input-wrap select:invalid,
+.input-wrap select option[value=""] { color: var(--gray-dim); }
+.input-wrap select option { background: #111; color: var(--white); }
+.input-wrap.select-wrap::after {
+  content: ''; position: absolute; right: 16px; top: 50%; width: 9px; height: 9px;
+  border-right: 1.5px solid var(--gold); border-bottom: 1.5px solid var(--gold);
+  transform: translateY(-65%) rotate(45deg); pointer-events: none;
+}
+
 /* phone number: country code + number */
 .phone-field { display: flex; gap: 10px; }
 .cc-wrap { flex: 0 0 118px; position: relative; }
@@ -460,7 +475,26 @@ footer .brand { color: var(--gold); }
           <div class="input-wrap"><textarea name="schedule" rows="2"></textarea></div>
         </div>
         <div class="field"><label class="field-label">How many hours per night do you usually sleep?</label>
-          <div class="input-wrap" style="max-width:160px;"><input type="text" name="sleepHours" placeholder="e.g. 7"></div>
+          <div class="input-wrap select-wrap" style="max-width:160px;">
+            <select name="sleepHours">
+              <option value="" disabled selected>e.g. 7</option>
+              <option value="Less than 4">&lt; 4</option>
+              <option value="4">4</option>
+              <option value="4.5">4.5</option>
+              <option value="5">5</option>
+              <option value="5.5">5.5</option>
+              <option value="6">6</option>
+              <option value="6.5">6.5</option>
+              <option value="7">7</option>
+              <option value="7.5">7.5</option>
+              <option value="8">8</option>
+              <option value="8.5">8.5</option>
+              <option value="9">9</option>
+              <option value="9.5">9.5</option>
+              <option value="10">10</option>
+              <option value="More than 10">10+</option>
+            </select>
+          </div>
         </div>
         <div class="field"><label class="field-label">Describe any emotional stressors or environmental issues that affect your eating.</label>
           <div class="input-wrap"><textarea name="stressors" rows="2"></textarea></div>
