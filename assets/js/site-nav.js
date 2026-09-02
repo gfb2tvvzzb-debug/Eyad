@@ -275,7 +275,7 @@ import { getCurrentUser, logout } from './auth-api.js';
     wrap.className = 'nav-account';
     wrap.innerHTML = `
       <span class="nav-user">Hi, ${first}</span>
-      <button type="button" class="nav-cta" data-nav="start">Sign Out</button>
+      <button type="button" class="nav-cta" data-nav="start">Sign&nbsp;Out</button>
     `;
     cta.replaceWith(wrap);
     wrap.querySelector('.nav-cta').addEventListener('click', async () => {
