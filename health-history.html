@@ -325,8 +325,7 @@ footer .brand { color: var(--gold); }
     <div class="section-body">
       <p class="field-label" style="text-transform:none;font-weight:400;">I confirm that the above information is accurate to the best of my knowledge and provided voluntarily.</p>
       <div class="row-2">
-        <div class="field"><label class="field-label">Signature</label><div class="input-wrap"><input type="text" name="signature" placeholder="Type full name as signature"></div></div>
-        <div class="field"><label class="field-label">Date</label><div class="input-wrap"><input type="date" name="consentDate"></div></div>
+        <div class="field" style="flex:1 1 100%;"><label class="field-label">Signature</label><div class="input-wrap"><input type="text" name="signature" placeholder="Type full name as signature"></div></div>
       </div>
       <p class="submit-note">Thank you for taking the time to complete this form. Your honest answers will help me design a coaching experience that truly fits your life and goals. — Dr. Eyad Bassem</p>
       <div class="step-nav">
@@ -480,6 +479,7 @@ document.getElementById('healthForm').addEventListener('submit', async function(
   const registration = JSON.parse(localStorage.getItem('ebClientInfo') || '{}');
   const lines = [];
   lines.push('HEALTH HISTORY — ' + (registration.fullName || 'Unnamed Client'));
+  lines.push('Submission Date: ' + new Date().toISOString().slice(0, 10));
   lines.push('');
   lines.push('— CLIENT INFORMATION —');
   lines.push('Full Name: ' + (registration.fullName || ''));
@@ -519,7 +519,6 @@ document.getElementById('healthForm').addEventListener('submit', async function(
   lines.push('');
   lines.push('— CONSENT —');
   lines.push('Signature: ' + get('signature'));
-  lines.push('Date: ' + get('consentDate'));
 
   const saved = await window.EBForms.saveFormAssignment(this, 'health-history', lines.join('\n'));
   if (!saved) return;

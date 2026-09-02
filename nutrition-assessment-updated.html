@@ -328,10 +328,8 @@ footer .brand { color: var(--gold); }
     <input type="hidden" name="phoneCountry">
     <input type="hidden" name="phone">
     <input type="hidden" name="email">
-    <input type="hidden" name="address">
     <input type="hidden" name="height">
     <input type="hidden" name="weight">
-    <input type="hidden" name="assessmentDate">
 
     <!-- GOALS -->
     <div class="section active" data-step="1" id="step-1">
@@ -689,9 +687,6 @@ if (dateStamp) dateStamp.textContent = new Date().toLocaleDateString('en-GB', { 
       });
     }
   } catch (e) { /* localStorage unavailable */ }
-  if (form.elements['assessmentDate']) {
-    form.elements['assessmentDate'].value = new Date().toISOString().slice(0, 10);
-  }
 })();
 
 // Single-select pill groups
@@ -804,6 +799,7 @@ document.getElementById('assessmentForm').addEventListener('submit', async funct
 
   const lines = [];
   lines.push('NUTRITION ASSESSMENT — ' + (get('fullName') || 'Unnamed Client'));
+  lines.push('Submission Date: ' + new Date().toISOString().slice(0, 10));
   lines.push('');
   lines.push('— CLIENT INFORMATION —');
   lines.push('Full Name: ' + get('fullName'));
@@ -814,7 +810,6 @@ document.getElementById('assessmentForm').addEventListener('submit', async funct
   lines.push('Address: ' + get('address'));
   lines.push('Height: ' + get('height'));
   lines.push('Weight: ' + get('weight'));
-  lines.push('Assessment Date: ' + get('assessmentDate'));
   lines.push('');
   lines.push('— GOALS —');
   lines.push('Goals: ' + getChipValues('goals').join(', '));

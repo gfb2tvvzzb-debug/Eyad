@@ -342,6 +342,7 @@ document.getElementById('exerciseForm').addEventListener('submit', async functio
   const registration = JSON.parse(localStorage.getItem('ebClientInfo') || '{}');
   const lines = [];
   lines.push('EXERCISE HISTORY — ' + (registration.fullName || 'Unnamed Client'));
+  lines.push('Submission Date: ' + new Date().toISOString().slice(0, 10));
   lines.push('');
   lines.push('— CLIENT INFORMATION —');
   lines.push('Full Name: ' + (registration.fullName || ''));

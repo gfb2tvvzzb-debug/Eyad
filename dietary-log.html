@@ -241,7 +241,6 @@ for (let d = 1; d <= DAY_COUNT; d++) {
   section.innerHTML = `
     <div class="section-bar"><div class="left"><span class="num">${String(stepNum).padStart(2,'0')}</span><h2>Day ${d}</h2></div></div>
     <div class="section-body">
-      <div class="field" style="max-width:260px;"><label class="field-label">Date</label><div class="input-wrap"><input type="date" name="day${d}_date"></div></div>
       <table class="log-table">
         <thead><tr><th style="width:34px;">#</th><th class="col-food">Food / Beverage</th><th class="col-time">Time</th><th class="col-qty">Quantity</th><th class="col-notes">Ingredients / Notes</th></tr></thead>
         <tbody class="log-body" data-day="${d}"></tbody>
@@ -334,10 +333,11 @@ document.getElementById('logForm').addEventListener('submit', async function(e) 
   const clientName = registration.fullName || 'Unnamed Client';
   const lines = [];
   lines.push('DIETARY LOG — ' + clientName);
+  lines.push('Submission Date: ' + new Date().toISOString().slice(0, 10));
 
   for (let d = 1; d <= DAY_COUNT; d++) {
     lines.push('');
-    lines.push('— DAY ' + d + ' (' + get('day' + d + '_date') + ') —');
+    lines.push('— DAY ' + d + ' —');
     const tbody = document.querySelector(`.log-body[data-day="${d}"]`);
     let any = false;
     Array.from(tbody.children).forEach((tr, idx) => {
