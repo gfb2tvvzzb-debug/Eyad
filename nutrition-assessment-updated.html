@@ -644,7 +644,7 @@ footer .brand { color: var(--gold); }
           <div class="pill-group yesno" data-group="avoidFoods" data-reveal="avoidFoodsDetail"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
           <div class="conditional" id="avoidFoodsDetail"><label class="field-label">If yes, please list (optional):</label><div class="input-wrap"><input type="text" name="avoidFoodsList"></div></div>
         </div>
-        <p class="submit-note">Submitting opens your email app with your answers ready to send to Dr. Eyad Bassem.</p>
+        <p class="submit-note">Submitting saves your assessment for review.</p>
         <div class="step-nav">
           <button type="button" class="wiz-btn back" data-back>Back</button>
           <button type="submit" class="wiz-btn submit-final">Submit Assessment</button>
@@ -876,10 +876,6 @@ document.getElementById('assessmentForm').addEventListener('submit', async funct
 
   const saved = await window.EBForms.saveFormAssignment(this, 'nutrition-assessment', lines.join('\n'));
   if (!saved) return;
-
-  const body = encodeURIComponent(lines.join('\n'));
-  const subject = encodeURIComponent('Nutrition Assessment — ' + (get('fullName') || 'New Client'));
-  window.location.href = `mailto:eyad.bassem98@hotmail.com?subject=${subject}&body=${body}`;
 
   document.getElementById('thanksOverlay').classList.add('active');
 });
