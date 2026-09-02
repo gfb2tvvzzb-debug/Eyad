@@ -123,10 +123,10 @@ body {
 
 /* Sneak peek gallery */
 .sneak-peek {
-  margin-top: 24px; display: flex; gap: 8px; overflow: hidden;
+  margin-top: 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
 }
 .sneak-peek-img {
-  width: 33.33%; height: 120px; object-fit: cover; object-position: top;
+  width: 100%; height: 120px; object-fit: cover; object-position: top;
   border: 1px solid var(--border); border-radius: 4px;
   opacity: 0.7; transition: all 0.4s ease; cursor: pointer;
   filter: brightness(0.85);
@@ -136,9 +136,33 @@ body {
   border-color: rgba(201, 168, 76, 0.3);
 }
 .sneak-peek-label {
-  margin-top: 12px; font-family: 'Montserrat', sans-serif;
-  font-size: 9px; font-weight: 600; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--gray); text-align: center;
+  margin-top: 14px; font-family: 'Montserrat', sans-serif;
+  font-size: 9px; font-weight: 600; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--cream-soft); text-align: center;
+}
+.sneak-peek-pdf {
+  position: relative; width: 100%; min-height: 120px; border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, #c9c5c0 0%, #b6b1ac 100%);
+  color: #1f1d1c; display: flex; align-items: center; justify-content: center; text-align: center;
+  padding: 12px 12px 10px; cursor: pointer; transition: all 0.3s ease; overflow: hidden;
+  font-family: 'Montserrat', sans-serif; font-size: 8px; letter-spacing: 1.2px;
+  text-transform: uppercase; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18), 0 6px 16px rgba(0,0,0,0.14);
+}
+.sneak-peek-pdf::before {
+  content: ""; position: absolute; left: 14px; right: 14px; top: 12px; height: 2px;
+  background: rgba(82, 76, 70, 0.18); box-shadow: 0 10px 0 rgba(82, 76, 70, 0.12), 0 20px 0 rgba(82, 76, 70, 0.08);
+}
+.sneak-peek-pdf::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 12px; height: 2px;
+  background: rgba(82, 76, 70, 0.18); box-shadow: 0 -10px 0 rgba(82, 76, 70, 0.12), 0 -20px 0 rgba(82, 76, 70, 0.08);
+}
+.sneak-peek-pdf:hover {
+  border-color: rgba(201, 168, 76, 0.6);
+  transform: translateY(-2px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.24), 0 10px 20px rgba(0,0,0,0.18);
+}
+.sneak-peek-pdf span {
+  position: relative; z-index: 1; display: inline-block; max-width: 86%; line-height: 1.45;
+  font-weight: 700; color: #1f1d1c; letter-spacing: 1.7px; text-shadow: 0 1px 0 rgba(255,255,255,0.18);
 }
 /* Lightbox */
 .lightbox {
@@ -991,6 +1015,11 @@ body.about-page #about, body.about-page #certificates { display: none; }
         </div>
         <h3>Knowledge and Wellness</h3>
         <p>Strategic supplementation, sleep optimization, stress management, and mobility protocols. The invisible hours between sessions are where real transformation happens.</p>
+        <div class="sneak-peek">
+          <button type="button" class="sneak-peek-pdf" data-lightbox-src="Nutrition Facts Ebook.pdf" data-lightbox-type="pdf"><span>Nutrition<br>Facts Ebook</span></button>
+          <button type="button" class="sneak-peek-pdf" data-lightbox-src="Supplement Guide.pdf" data-lightbox-type="pdf"><span>Supplement<br>Guide</span></button>
+        </div>
+        <div class="sneak-peek-label">PDF previews — click to open</div>
       </div>
     </div>
   </div>
@@ -1136,22 +1165,51 @@ document.querySelectorAll('.about-stat-number[data-count]').forEach(el => {
 
 
 // Lightbox
-function openLightbox(src) {
-  document.getElementById('lightboxImg').src = src;
-  document.getElementById('lightbox').classList.add('active');
+function openLightbox(src, type = 'image') {
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  const frame = document.getElementById('lightboxFrame');
+
+  if (type === 'pdf') {
+    img.style.display = 'none';
+    frame.style.display = 'block';
+    frame.src = src;
+  } else {
+    frame.style.display = 'none';
+    frame.src = '';
+    img.style.display = 'block';
+    img.src = src;
+  }
+
+  lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('active');
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  const frame = document.getElementById('lightboxFrame');
+
+  lightbox.classList.remove('active');
+  img.src = '';
+  frame.src = '';
+  img.style.display = 'block';
+  frame.style.display = 'none';
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+document.querySelectorAll('[data-lightbox-src]').forEach((button) => {
+  button.addEventListener('click', () => {
+    openLightbox(button.dataset.lightboxSrc, button.dataset.lightboxType || 'image');
+  });
+});
 
 </script>
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <span class="lightbox-close">&times;</span>
   <img id="lightboxImg" src="" alt="Program Preview">
+  <iframe id="lightboxFrame" title="PDF Preview" src="" style="display:none; width:min(92vw, 900px); height:min(90vh, 820px); border:1px solid rgba(201,168,76,0.25); background:#111;"></iframe>
 </div>
 <script type="module" src="./assets/js/certificate-viewer.js"></script>
 <script type="module" src="./assets/js/site-nav.js"></script>
