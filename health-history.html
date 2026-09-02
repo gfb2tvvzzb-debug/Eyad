@@ -15,7 +15,7 @@
   --cream: #e8e0d0; --cream-soft: #d5cfc4; --white: #f0ebe3; --gray: #8a8a8a; --gray-dim: #5a5a5a;
 }
 html { scroll-behavior: smooth; }
-body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--cream); -webkit-font-smoothing: antialiased; }
+body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--cream); -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: #0a0a0a; } ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -120,11 +120,25 @@ body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(
 footer { padding: 34px 40px; text-align: center; border-top: 1px solid var(--border); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gray); }
 footer .brand { color: var(--gold); }
 
+.add-row-btn {
+  margin-top: 16px; background: transparent; border: 1px dashed var(--border-light); color: var(--gray);
+  font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 12px; width: 100%; cursor: pointer; transition: all 0.25s;
+}
+.add-row-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.04); }
+
+.medication-row { margin-bottom: 12px; }
+.medication-row .input-wrap { min-height: 52px; }
+.medication-row.single { display: block; }
+.medication-row.single .input-wrap { width: 100%; }
+
 @media (max-width: 640px) {
   .top-bar { padding: 4px 20px; } .hero { padding: 70px 20px 50px; } .form-shell { padding: 40px 16px 70px; }
-  .row-2, .row-3, .chip-grid { grid-template-columns: 1fr; } .section-body { padding: 26px 18px; }
+  .row-2, .chip-grid { grid-template-columns: 1fr; } .section-body { padding: 26px 18px; }
   .pain-grid { grid-template-columns: repeat(2, 1fr); }
   .rating-table td.label { display: block; margin-bottom: 6px; }
+  .medication-row.single { display: block; }
+  .medication-row .input-wrap input { font-size: 17px; }
 }
 
 /* ===== WIZARD ===== */
@@ -146,6 +160,16 @@ footer .brand { color: var(--gold); }
 .wiz-btn.next:hover, .wiz-btn.submit-final:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-glow); }
 .wiz-btn.back { background: transparent; color: var(--cream-soft); border: 1px solid var(--border-light); }
 .wiz-btn.back:hover { border-color: var(--gold); color: var(--gold); }
+.add-row-btn {
+  margin-top: 16px; background: transparent; border: 1px dashed var(--border-light); color: var(--gray);
+  font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 12px; width: 100%; cursor: pointer; transition: all 0.25s;
+}
+.add-row-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.04); }
+
+.medication-row { margin-bottom: 12px; }
+.medication-row .input-wrap { min-height: 52px; }
+
 @media (max-width: 640px) { .progress-wrap { top: 73px; } }
 </style>
 <link rel="stylesheet" href="./assets/css/site-nav.css">
@@ -182,17 +206,9 @@ footer .brand { color: var(--gold); }
       <div class="field"><label class="field-label">Are you taking any medications?</label>
         <div class="pill-group yesno" data-group="medications" data-reveal="medsBox"><div class="pill" data-value="Yes">Yes</div><div class="pill" data-value="No">No</div></div>
         <div class="conditional" id="medsBox">
-          <label class="field-label">Medication / Dosage &amp; frequency / Condition</label>
-          <div class="row-3" style="margin-bottom:10px;">
-            <div class="input-wrap"><input type="text" name="med1_name" placeholder="Medication"></div>
-            <div class="input-wrap"><input type="text" name="med1_dosage" placeholder="Dosage &amp; frequency"></div>
-            <div class="input-wrap"><input type="text" name="med1_condition" placeholder="Condition"></div>
-          </div>
-          <div class="row-3">
-            <div class="input-wrap"><input type="text" name="med2_name" placeholder="Medication"></div>
-            <div class="input-wrap"><input type="text" name="med2_dosage" placeholder="Dosage &amp; frequency"></div>
-            <div class="input-wrap"><input type="text" name="med2_condition" placeholder="Condition"></div>
-          </div>
+          <label class="field-label">Medication</label>
+          <div id="medicationRows"></div>
+          <button type="button" class="add-row-btn" id="addMedicationRow">+ Add Row</button>
         </div>
       </div>
       <div class="field"><label class="field-label">Has your doctor diagnosed you with a bone or joint problem worsened by exercise?</label>
@@ -373,6 +389,21 @@ painAreas.forEach(area => {
   painGrid.appendChild(item);
 });
 
+const medicationRows = document.getElementById('medicationRows');
+function addMedicationRow() {
+  const rowNum = medicationRows.children.length + 1;
+  const row = document.createElement('div');
+  row.className = 'medication-row single';
+  row.innerHTML = `
+    <div class="input-wrap"><input type="text" name="med${rowNum}_name" placeholder="Medication"></div>
+  `;
+  medicationRows.appendChild(row);
+}
+if (medicationRows) {
+  addMedicationRow();
+  document.getElementById('addMedicationRow').addEventListener('click', addMedicationRow);
+}
+
 document.querySelectorAll('.chip-grid[data-items]').forEach(grid => {
   grid.dataset.items.split('|').forEach(label => {
     const chip = document.createElement('div');
@@ -449,7 +480,14 @@ function goToStep(n) {
   target.classList.add('active');
   currentStep = n;
   updateProgress();
-  document.querySelector('.progress-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (window.innerWidth > 768) {
+    const progressWrap = document.querySelector('.progress-wrap');
+    if (progressWrap) {
+      const top = progressWrap.getBoundingClientRect().top + window.scrollY - 92;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
 }
 
 document.querySelectorAll('[data-next]').forEach(btn => {
@@ -492,6 +530,20 @@ document.getElementById('healthForm').addEventListener('submit', async function(
   lines.push('— PHYSICIAN INFORMATION —');
   lines.push('Under physician care: ' + getPill('physicianCare') + (get('physicianReason') ? ' — ' + get('physicianReason') : ''));
   lines.push('Taking medications: ' + getPill('medications'));
+  const medicationDetails = [];
+  for (let i = 1; ; i++) {
+    const medName = get(`med${i}_name`);
+    const medDosage = get(`med${i}_dosage`);
+    const medCondition = get(`med${i}_condition`);
+    if (!medName && !medDosage && !medCondition) break;
+    const detail = [medName || (medDosage || medCondition ? 'Medication' : ''), medDosage || '', medCondition || '']
+      .filter(Boolean)
+      .join(' | ');
+    if (detail) medicationDetails.push(detail);
+  }
+  if (medicationDetails.length) {
+    lines.push('Medication details: ' + medicationDetails.join('; '));
+  }
   lines.push('Bone/joint problem worsened by exercise: ' + getPill('boneJoint'));
   lines.push('Reason not to exercise: ' + getPill('exerciseReason') + (get('exerciseReasonDetail') ? ' — ' + get('exerciseReasonDetail') : ''));
   lines.push('');
